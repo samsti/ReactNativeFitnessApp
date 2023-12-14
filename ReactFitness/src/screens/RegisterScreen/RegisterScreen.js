@@ -1,14 +1,25 @@
 import React, {useState} from 'react';
-import { View, Text, SafeAreaView, StyleSheet , ScrollView} from "react-native";
+import { View, Text, SafeAreaView, StyleSheet , ScrollView, Image} from "react-native";
 import Input from '../../components/Input';
 import CustomButton from '../../components/customButton';
 import Navigation from '../../navigation';
 import { useNavigation } from '@react-navigation/native';
+import userIcon from '../../assets/images/user.png';
+import lockIcon from '../../assets/images/zamek.png';
+
+// require('../../assets/images/user.png'
+
 
 const RegisterScreen = () => {
   const [Username, setUsername] = useState('');
   const [Password, setPassword] = useState('');
   const [PasswordRepeat, setPasswordRepeat] = useState('');
+  const [iconImage, setIconImage] = useState('');
+
+  const handleImageChange = (text) => {
+    // Update the state with the new image URL entered in the TextInput
+    setIconImage(text);
+  };
 
   const navigation = useNavigation();
 
@@ -28,15 +39,19 @@ const RegisterScreen = () => {
         <Input 
         placeholder="Username" 
         value={Username} 
+        imageValue={iconImage}
         setValue={setUsername} 
         secureTextEntry={false}
+        imageSource={iconImage !== '' ? { uri: iconImage } : userIcon}
         />
 
         <Input 
         placeholder="Password" 
         value={Password} 
+        imageValue={iconImage}
         setValue={setPassword} 
         secureTextEntry={true}
+        imageSource={iconImage !== '' ? { uri: iconImage } : lockIcon}
         />
 
         <Input 
@@ -44,6 +59,7 @@ const RegisterScreen = () => {
         value={PasswordRepeat}  
         setValue={setPasswordRepeat}  
         secureTextEntry={true}
+        imageSource={iconImage !== '' ? { uri: iconImage } : lockIcon}
         />
       <CustomButton 
       text="Register" 
