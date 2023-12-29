@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
     color: 'white',
     paddingVertical: 8, 
     backgroundColor: '#a83203',
-    borderRadius: 5,// Adjust vertical padding for the text input
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,// Adjust vertical padding for the text input
   },
 });
 
