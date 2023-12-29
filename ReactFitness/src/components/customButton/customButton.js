@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#a83203",
     marginTop: 15,
     width: "40%",
-    height: "10%",
+    height: "9%",
     borderRadius: 5,
     justifyContent: "center",
   },
@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     color: "#FF5E00",
     width: "100%",
+    marginTop: 0,
   },
 
   text_PRIMARY: {
@@ -32,10 +33,12 @@ const styles = StyleSheet.create({
 
   container_REGISTER:{
     backgroundColor: "#a83203",
-    width: "40%",
-    height: "10%",
+    width: "45%",
+    height: "5%",
     borderRadius: 5,
     justifyContent: "center",
+    marginTop: "7%",
+    marginBottom: 0,
   },
 
   text: {
