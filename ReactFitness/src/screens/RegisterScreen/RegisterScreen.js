@@ -6,6 +6,9 @@ import Navigation from '../../navigation';
 import { useNavigation } from '@react-navigation/native';
 import userIcon from '../../assets/images/user.png';
 import lockIcon from '../../assets/images/zamek.png';
+import ageIcon from '../../assets/images/age_icon.png';
+import heightIcon from '../../assets/images/height_icon.png';
+import weightIcon from '../../assets/images/weight_icon.png';
 
 // require('../../assets/images/user.png'
 
@@ -77,7 +80,7 @@ const RegisterScreen = () => {
         value={age}  
         setValue={setAge}  
         secureTextEntry={false}
-        imageSource={iconImage !== '' ? { uri: iconImage } : lockIcon}
+        imageSource={iconImage !== '' ? { uri: iconImage } : ageIcon}
         type="REGISTER2" 
         />
          <Input 
@@ -85,7 +88,7 @@ const RegisterScreen = () => {
         value={weight}  
         setValue={setWeight}  
         secureTextEntry={false}
-        imageSource={iconImage !== '' ? { uri: iconImage } : lockIcon}
+        imageSource={iconImage !== '' ? { uri: iconImage } : weightIcon}
         type="REGISTER2" 
         />
         <Input 
@@ -93,7 +96,7 @@ const RegisterScreen = () => {
         value={height}  
         setValue={setHeight}  
         secureTextEntry={false}
-        imageSource={iconImage !== '' ? { uri: iconImage } : lockIcon}
+        imageSource={iconImage !== '' ? { uri: iconImage } : heightIcon}
         type="REGISTER2" 
         />
 
