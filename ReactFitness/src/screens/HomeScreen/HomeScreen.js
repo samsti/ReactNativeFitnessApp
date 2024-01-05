@@ -1,25 +1,30 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import BodySvg from '../../assets/svg/Body.svg';
-
-
+import Body from '../../components/BodySvg'
+import NavBar from '../../components/navBar';
 
 const HomeScreen = () => {
   return (
+  <>
+  <NavBar/>
     <View style={styles.container}>
-        <BodySvg style={styles.Svg} />
+      <View style={styles.body}>
+      <Body  /> 
     </View>
+  </View>
+  </>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    display: 'block',
+    backgroundColor: "#484847",
   },
-  Svg: {
+  body: {
     marginLeft: "25%",
   },
 });
