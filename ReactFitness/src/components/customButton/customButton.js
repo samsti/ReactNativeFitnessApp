@@ -47,6 +47,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     fontWeight: "bold",
   },
+  container_CARD: {
+    ml: '21px',
+    color: '#fff',
+    background: '#FFA9A9',
+    borderRadius: '20px',
+    textTransform: 'capitalize',
+  },
+  text_CARD: {
+    fontSize: '14px',
+  },
+
+
 });
 
 export default customButton;

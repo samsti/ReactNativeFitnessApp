@@ -7,5 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "react-loader-spinner": "^6.1.6",
+    "react-router-dom": "^6.21.1"
+  }
 }
