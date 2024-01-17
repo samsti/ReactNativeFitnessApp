@@ -25,7 +25,7 @@ const LogInScreen = () => {
     const onLogInPressed = () => {
       console.warn("Log in")
 
-      navigation.navigate('Home');
+      navigation.navigate('Body');
     };
 
     const onDontHaveAccount = () => {
