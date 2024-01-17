@@ -2,14 +2,19 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
 const ExerciseCard = ({ exercise }) => {
-  return (
-    <View style={styles.cardContainer}>
-      <Image source={{ uri: exercise.gifUrl }} style={styles.gifImage} />
-      <Text style={styles.exerciseName}>{exercise.name}</Text>
-      <Text style={styles.instructions}>{exercise.instructions}</Text>
-    </View>
-  );
-};
+
+    return (
+      <View style={styles.cardContainer}>
+        <Image source={{ uri: exercise.gifUrl }} style={styles.gifImage} />
+        <Text style={styles.exerciseName}>{exercise.name}</Text>
+        <Text style={styles.instructions}>{exercise.instructions}</Text>
+        <Text style={styles.equipment}>{exercise.equipment}</Text>
+      </View>
+    );
+  };
+
+
+
 
 const styles = StyleSheet.create({
   cardContainer: {
@@ -33,6 +38,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   instructions: {
+    fontSize: 14,
+  },
+  equipment: {
     fontSize: 14,
   },
 });

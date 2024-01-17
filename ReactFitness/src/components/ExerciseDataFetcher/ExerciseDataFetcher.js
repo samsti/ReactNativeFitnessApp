@@ -18,27 +18,31 @@ const ExerciseDataFetcher = ({ selectedMuscle, onFetchComplete }) => {
             break;
 
           case 'Traps':
-            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/bodyPart/neck';
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/traps';
             break;
 
           case 'Biceps':
-            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/bodyPart/upper%20arms';
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/biceps';
+            break;
+
+          case 'Forearms':
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/forearms';
             break;
 
           case 'Lats':
-            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/bodyPart/back';
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/lats';
             break;
 
           case 'Abs':
-            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/bodyPart/waist';
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/abs';
             break;
 
           case 'Quads':
-            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/bodyPart/upper%20legs';
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/quads';
             break;
 
           case 'Calves':
-            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/bodyPart/lower%20legs';
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/calves';
             break;
 
           default:
