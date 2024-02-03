@@ -3,10 +3,10 @@ import { View, Text, SafeAreaView, Image, StyleSheet , useWindowDimensions, Scro
 import Input from '../../components/Input';
 import CustomButton from '../../components/customButton';
 import { useNavigation } from '@react-navigation/native';
-import index from '../HomeScreen';
 import userIcon from '../../assets/images/user.png';
 import lockIcon from '../../assets/images/zamek.png';
 import logo from '../../assets/images/logo_login.png';
+import HomeScreen from '../HomeScreen';
 
 
 const LogInScreen = () => {
@@ -25,7 +25,7 @@ const LogInScreen = () => {
     const onLogInPressed = () => {
       console.warn("Log in")
 
-      navigation.navigate('Body');
+      navigation.navigate('Home');
     };
 
     const onDontHaveAccount = () => {
@@ -48,7 +48,6 @@ const LogInScreen = () => {
           secureTextEntry={false}
           imageSource={iconImage !== '' ? { uri: iconImage } : userIcon}
         />
-
         <Input 
           placeholder="Password" 
           value={Password} 
@@ -57,14 +56,12 @@ const LogInScreen = () => {
           secureTextEntry={true}
           imageSource={iconImage !== '' ? { uri: iconImage } : lockIcon}
         />
-  
         <CustomButton text="Sign in" onPress={onLogInPressed} />
         <CustomButton 
           text="Don't have an account? Make one" 
           onPress={onDontHaveAccount}
           type="PRIMARY"
         />
-
       </KeyboardAvoidingView>
     </View>
   );

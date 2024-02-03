@@ -1,8 +1,8 @@
-// ExerciseListScreen.js
 import React, { useState } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import ExerciseCard from '../../components/ExerciseCard';
 import ExerciseDataFetcher from '../../components/ExerciseDataFetcher';
+
 
 const ExerciseListScreen = ({ route }) => {
   const selectedMuscle = route.params?.selectedMuscle || '';
@@ -18,7 +18,7 @@ const ExerciseListScreen = ({ route }) => {
       <Text>{selectedMuscle}</Text>
       <ExerciseDataFetcher selectedMuscle={selectedMuscle} onFetchComplete={setExerciseData} />
       <FlatList
-        data={exerciseData}
+        data={exerciseData} 
         keyExtractor={(item) => item.id.toString()}
         numColumns={1}
         renderItem={({ item, index }) => (
@@ -32,7 +32,6 @@ const ExerciseListScreen = ({ route }) => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

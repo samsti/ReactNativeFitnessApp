@@ -10,7 +10,7 @@ const ExerciseDataFetcher = ({ selectedMuscle, onFetchComplete }) => {
 
         switch (selectedMuscle) {
           case 'Shoulders':
-            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/bodyPart/shoulders';
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/bodyPart/shoulders?limit=20';
             break;
 
           case 'Chest':
@@ -52,6 +52,7 @@ const ExerciseDataFetcher = ({ selectedMuscle, onFetchComplete }) => {
 
         const response = await fetch(rapidApiEndpoint, {
           method: 'GET',
+          params: {limit: '50'},
           headers: {
             'X-RapidAPI-Key': rapidApiKey,
             'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com',
@@ -73,3 +74,4 @@ const ExerciseDataFetcher = ({ selectedMuscle, onFetchComplete }) => {
 };
 
 export default ExerciseDataFetcher;
+
