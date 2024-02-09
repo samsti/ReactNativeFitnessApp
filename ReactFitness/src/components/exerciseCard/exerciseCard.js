@@ -1,8 +1,19 @@
 // ExerciseCard.js
-import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { TouchableOpacity, Image, Text, Animated, StyleSheet, Link } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
-const exerciseCard = ({ exercise, expanded, toggleExpand }) => {
+const ExerciseCard = ({ exercise, styles, expanded, toggleExpand }) => {
+  const fadeAnim = new Animated.Value(0);
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000, 
+      useNativeDriver: true,
+    }).start();
+  }, [expanded, fadeAnim]);
+
   return (
     <TouchableOpacity
       style={[
@@ -12,7 +23,16 @@ const exerciseCard = ({ exercise, expanded, toggleExpand }) => {
       ]}
       onPress={toggleExpand}
     >
-      <Image source={{ uri: exercise.gifUrl }} style={styles.gifImage(expanded)} />
+   
+      <FastImage
+        source={{ uri: exercise.gifUrl, priority: FastImage.priority.high, }}
+        style={[
+          styles.gifImage,
+          expanded && { height: 200 }, 
+        ]}
+      />
+  
+        
       <Text style={styles.exerciseName}>{exercise.name}</Text>
       {expanded && (
         <>
@@ -32,37 +52,42 @@ const exerciseCard = ({ exercise, expanded, toggleExpand }) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
+
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 8,
     padding: 16,
-    marginVertical: 8,
+    marginBottom: 8,
+    backgroundColor: 'red',
   },
-  gifImage: (expanded) => ({
+  gifImage: {
+
     width: '100%',
-    height: expanded ? 330 : 150,
     resizeMode: 'cover',
     borderRadius: 8,
-    marginBottom: 8,
-  }),
-  exerciseName: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 8,
+
   },
-  sectionHeading: {
-    fontSize: 14,
+  exerciseName: {
+
+    fontSize: 18,
     fontWeight: 'bold',
     marginTop: 8,
   },
+  sectionHeading: {
+
+    marginTop: 8,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   additionalInfo: {
+
     fontSize: 14,
-    marginBottom: 8,
   },
   instructions: {
+
     fontSize: 14,
-    marginBottom: 8,
+    marginTop: 8,
   },
 });
 
-export default exerciseCard;
+export default ExerciseCard;

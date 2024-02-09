@@ -16,8 +16,7 @@ import Navigation from './src/navigation';
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    fontFamily: 'Radjdhani',
-  },
+  }
 });
 
 const App = () => {

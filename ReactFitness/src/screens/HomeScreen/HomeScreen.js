@@ -1,6 +1,6 @@
 // HomeScreen.js
 import React, { useState, useEffect } from 'react';
-import { View, Image, Text, Alert, StyleSheet } from 'react-native';
+import { View, Image, Text, Alert, StyleSheet, ScrollView } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -78,14 +78,29 @@ const HomeScreen = () => {
         </View>
       </View>
       <TrainingsSlider/>
+      <View style={styles.footer}>
+          <Text>footer</Text>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  
   container: {
     backgroundColor: 'grey',
     height: '100%',
+    fontFamily: "Rajdhani",
+  },
+  footer: {
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    width: '100%',
+    height: 70,
+    backgroundColor: 'black',
+    borderWidth: 1,
+    borderColor: 'white',
   },
   logo: {
     width: 90,
@@ -124,7 +139,7 @@ const styles = StyleSheet.create({
   inlineContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 30,
+    marginTop: 15,
     marginLeft: 15,
     marginRight: 15,
     height: 150,
