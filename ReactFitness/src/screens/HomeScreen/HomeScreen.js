@@ -5,6 +5,7 @@ import { Calendar } from 'react-native-calendars';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import TrainingsSlider from '../../components/TrainingsSlider';
+import NavBar from '../../components/navBar/navBar';
 
 const HomeScreen = () => {
   const [markedDates, setMarkedDates] = useState({});
@@ -55,7 +56,7 @@ const HomeScreen = () => {
   };
   return (
     <View style={styles.container}>
-      <Image source={require('../../assets/images/logo_main.png')} style={styles.logo} />
+      <NavBar />
       <View style={styles.calendarContainer}>
         <Calendar
           style={styles.calendar}
@@ -78,9 +79,6 @@ const HomeScreen = () => {
         </View>
       </View>
       <TrainingsSlider/>
-      <View style={styles.footer}>
-          <Text>footer</Text>
-      </View>
     </View>
   );
 };

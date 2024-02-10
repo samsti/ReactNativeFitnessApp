@@ -1,1 +1,1 @@
-export {default} from './ExerciseCard'
+export {default} from './ExerciseCard';

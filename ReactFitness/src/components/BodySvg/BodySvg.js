@@ -1,10 +1,8 @@
-import axios from 'axios';
+
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import { Svg, Path, G } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
-import Exercises from '../../screens/ExerciseListScreen'
-
 
 const BodySvg = () => {
   const navigation = useNavigation();
@@ -13,6 +11,12 @@ const BodySvg = () => {
   const handleMuscleClick = (muscleId) => {
     setSelectedMuscle(muscleId);
     navigation.navigate('Exercises', { selectedMuscle: muscleId });
+  };
+
+  const [showBodyBack, setShowBodyBack] = useState(false);
+
+  const toggleBody = () => {
+    setShowBodyBack(!showBodyBack);
   };
   
   return (
@@ -94,25 +98,25 @@ const BodySvg = () => {
                 d="m162.3,98.95c-2.89-1.47-4.95-3.04-6.27-4.18-2.03-1.75-3.35-3.37-5.98-6.57-2.56-3.13-2.49-3.38-4.38-5.53-2.28-2.59-3.57-4.06-5.58-5.48-3.14-2.21-6.08-2.91-9.76-3.78-3.56-.84-5.91-1.4-9.06-.9-2.01.32-5.03.81-6.97,3.19-1.19,1.45-1.4,3.51-1.79,7.57-.25,2.64-.42,5.94-.2,10.56.21,4.58.32,6.87,1,8.46,1.74,4.1,5.2,6.22,7.57,7.67,1.6.98,6.01,3.6,12.25,3.63,1.18,0,8.93-.06,14.89-5.28,2.68-2.35,2.99-3.98,6.27-6.17,2.98-1.99,5.95-2.81,8.02-3.19Z"
             />
         </G>
-        <G class = "bodyMapMuslce" id="Lats">
+        <G class = "bodyMapMuslce" id="FrontLats">
             <Path 
                 onPress={() => {
-                    handleMuscleClick('Lats') 
+                    handleMuscleClick('FrontLats') 
                   } 
                 } 
-                fill={selectedMuscle === 'Lats' ? '#FF5E00' : '#484847'}
+                fill={selectedMuscle === 'FrontLats' ? '#FF5E00' : '#484847'}
                 class="cls1" 
-                id="Lats" 
+                id="FrontLats" 
                 d="m70.37,102.76c.19.83.43,2.04.6,3.54.04.36.07.63.07.72.05.93-.11,1.97-.47,5.35-.53,4.93-.48,6.06-.3,7.17.15.93.36,1.64,1.2,3.88,1.17,3.14,2.06,5.53,3.78,9.26,2.85,6.18,3.44,5.73,4.28,8.46,1.12,3.66.87,6.68.65,9.36-.56,6.78-1.17,14.31-1.95,22.8.69,0,1.68-.04,2.84-.22,1.14-.18,4.03-.63,6.26-2.2,2.77-1.95,3.64-5.01,4.33-7.43.86-3.01.78-5.4.62-10.1-.16-4.79-.61-4.57-.47-7.6.04-.87.49-3.59,1.38-9,.35-2.14.57-4.31.89-6.46.34-2.32.5-3.2.2-4.38-.49-1.95-1.82-3.16-3.09-4.28-4.67-4.13-7.19-6.15-9.26-8.02-2.71-2.43-2.53-2.76-6.07-6.07-2.24-2.09-4.16-3.71-5.48-4.78Z"
             />
             <Path 
                 onPress={() => {
-                    handleMuscleClick('Lats') 
+                    handleMuscleClick('FrontLats') 
                   } 
                 } 
-                fill={selectedMuscle === 'Lats' ? '#FF5E00' : '#484847'}
+                fill={selectedMuscle === 'FrontLats' ? '#FF5E00' : '#484847'}
                 class="cls1" 
-                id="Lats" 
+                id="FrontLats" 
                 d="m154.24,103.18c-.19.83-.43,2.04-.6,3.54-.04.36-.07.63-.07.72-.05.93.11,1.97.47,5.35.53,4.93.48,6.06.3,7.17-.15.93-.36,1.64-1.2,3.88-1.17,3.14-2.06,5.53-3.78,9.26-2.85,6.18-3.44,5.73-4.28,8.46-1.12,3.66-.87,6.68-.65,9.36.56,6.78,1.17,14.31,1.95,22.8-.69,0-1.68-.04-2.84-.22-1.14-.18-4.03-.63-6.26-2.2-2.77-1.95-3.64-5.01-4.33-7.43-.86-3.01-.78-5.4-.62-10.1.16-4.79.61-4.57.47-7.6-.04-.87-.49-3.59-1.38-9-.35-2.14-.57-4.31-.89-6.46-.34-2.32-.5-3.2-.2-4.38.49-1.95,1.82-3.16,3.09-4.28,4.67-4.13,7.19-6.15,9.26-8.02,2.71-2.43,2.53-2.76,6.07-6.07,2.24-2.09,4.16-3.71,5.48-4.78Z"
             />
         </G>

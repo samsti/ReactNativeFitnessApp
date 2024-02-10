@@ -14,35 +14,35 @@ const ExerciseDataFetcher = ({ selectedMuscle, onFetchComplete }) => {
             break;
 
           case 'Chest':
-            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/bodyPart/chest';
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/bodyPart/chest?limit=20';
             break;
 
           case 'Traps':
-            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/traps';
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/traps?limit=20';
             break;
 
           case 'Biceps':
-            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/biceps';
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/biceps?limit=20';
             break;
 
           case 'Forearms':
-            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/forearms';
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/forearms?limit=20';
             break;
 
-          case 'Lats':
-            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/lats';
+          case 'FrontLats':
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/serratus%20anterior?limit=20';
             break;
 
           case 'Abs':
-            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/abs';
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/abs?limit=20';
             break;
 
           case 'Quads':
-            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/quads';
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/quads?limit=20';
             break;
 
           case 'Calves':
-            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/calves';
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/calves?limit=20';
             break;
 
           default:

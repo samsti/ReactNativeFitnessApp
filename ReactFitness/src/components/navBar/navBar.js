@@ -1,16 +1,28 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-const NavBar = ({ title, onLeftButtonPress, leftButtonTitle, onRightButtonPress, rightButtonTitle }) => {
+import { useNavigation } from '@react-navigation/native';
+
+const NavBar = ({  }) => {
+
+  const navigation = useNavigation();
+
+
   return (
     <View style={styles.navBar}>
-      <TouchableOpacity onPress={onLeftButtonPress} style={styles.button}>
-        <Text style={styles.buttonText}>{leftButtonTitle}SAM</Text>
+      <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('Body')}>
+        <Image source={require('../../assets/images/cviky.png')} style={styles.icon}  />
       </TouchableOpacity>
-      <Image source={require('../../assets/images/logo_main.png')} style={styles.logo} />
-      <TouchableOpacity onPress={onRightButtonPress} style={styles.button}>
-      
-        <Text style={styles.buttonText}>{rightButtonTitle}Burger</Text>
-        
+      <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('')}>
+        <Image source={require('../../assets/images/jidelnicek.png')} style={styles.icon}  />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('Home')}>
+        <Image source={require('../../assets/images/logo_main.png')} style={styles.logo} />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('Home')}>
+        <Image source={require('../../assets/images/calendar.png')} style={styles.icon}  />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('')}>
+        <Image source={require('../../assets/images/user_nav.png')} style={styles.icon}  />
       </TouchableOpacity>
     </View>
   );
@@ -18,10 +30,12 @@ const NavBar = ({ title, onLeftButtonPress, leftButtonTitle, onRightButtonPress,
 
 const styles = StyleSheet.create({
   navBar: {
+    top: 0,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     textAlign: 'center',
+    verticalAlign: "center",
     backgroundColor: 'black',
     width: '100%',
     height: '10%',
@@ -30,18 +44,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-  button: {
-    padding: 20,
+  menu: {
+    verticalAlign: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 15,
   },
-  buttonText: {
-    fontSize: 25,
-    color: '#FF5E00',
+  icon: {
+    width: 40, 
+    height: 40,
   },
   logo: {
     width: 90, // Adjust width as per your design
     height: 60, // Adjust height as per your design
     resizeMode: 'contain',
-    marginLeft: 15,
   },
 });
 
