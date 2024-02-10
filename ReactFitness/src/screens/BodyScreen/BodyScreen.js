@@ -11,7 +11,7 @@ const BodyScreen = () => {
   <NavBar/>
     <View style={styles.container}>
       <View style={styles.body}>
-      <Body />
+      <BodyBack />
     </View>
   </View>
   </>
@@ -24,11 +24,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: "#484847",
+    backgroundColor: '#484847',
   },
   body: {
-    marginLeft: "30%",
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%', 
+    height: '100%', 
   },
+
 });
 
 export default BodyScreen;
