@@ -45,6 +45,38 @@ const ExerciseDataFetcher = ({ selectedMuscle, onFetchComplete }) => {
             rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/calves?limit=20';
             break;
 
+          case 'Triceps':
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/triceps?limit=20';
+            break;
+
+          case 'Delts':
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/delts?limit=20';
+            break;
+
+          case 'UpperBack':
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/upper%20back?limit=20';
+            break;
+
+          case 'Lats':
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/lats?limit=20';
+            break;
+
+          case 'Glutes':
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/glutes?limit=20';
+            break;
+
+          case 'Adductors':
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/adductors?limit=20';
+            break;
+
+          case 'Hamstrings':
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/hamstrings?limit=20';
+            break;
+
+          case 'Spine':
+            rapidApiEndpoint = 'https://exercisedb.p.rapidapi.com/exercises/target/spine?limit=20';
+            break;
+
           default:
             console.warn('Invalid muscle selection');
             return;

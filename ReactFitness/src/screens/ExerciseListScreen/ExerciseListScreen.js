@@ -18,7 +18,6 @@ const ExerciseListScreen = ({ route }) => {
   <>
     <NavBar />
     <View style={styles.container}>
-      <Text>{selectedMuscle}</Text>
       <ExerciseDataFetcher selectedMuscle={selectedMuscle} onFetchComplete={setExerciseData} />
       <FlatList
         data={exerciseData}
@@ -43,6 +42,12 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: "#484847",
+  },
+  muscleName: {
+    color: "#FF5E00",
+    fontSize: 25,
+    textAlign: 'center',
+    marginBottom: 15,
   },
   cardContainer: {
     // Your cardContainer styles here

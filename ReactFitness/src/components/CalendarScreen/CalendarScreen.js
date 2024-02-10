@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, StyleSheet, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import NavBar from '../navBar/navBar';
 
 const CalendarScreen = () => {
   const [events, setEvents] = useState([]);
@@ -35,8 +36,8 @@ const CalendarScreen = () => {
     return (
       <View style={styles.item}>
         <View>
-          <Text>{item.text}</Text>
-          <Text>{item.time}</Text>
+          <Text>Muscle Part: {item.text}</Text>
+          <Text>Time: {item.time}</Text>
         </View>
         <TouchableOpacity style={styles.deleteButton} onPress={() => handleDeleteEvent(item.id)}>
           <Text style={styles.deleteButtonText}>Delete</Text>
@@ -124,52 +125,121 @@ const CalendarScreen = () => {
     }
   };
 
+  // Function to get day and month in the format "9.2"
+  const getFormattedDate = (date) => {
+    const selectedDate = new Date(date);
+    const day = selectedDate.getDate();
+    const month = selectedDate.getMonth() + 1; // Months are zero-indexed
+    return `${day}.${month}`;
+  };
+
+  // Function to get the name of the day
+  const getDayName = (date) => {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const selectedDate = new Date(date);
+    const dayIndex = selectedDate.getDay();
+    return days[dayIndex];
+  };
+
   return (
+    <>
+    <NavBar />
     <View style={styles.container}>
-      <Text style={styles.headerText}>Fitness Schedule</Text>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('Home')}>
-        <Text>Back to Home</Text>
-      </TouchableOpacity>
+      <View style={styles.contentContainer}>
+        <Text style={styles.headerText}>TODAY'S WORKOUT</Text>
+        <Text style={styles.dateText}>{getFormattedDate(selectedDate)} {getDayName(selectedDate)}</Text>
+      </View>
+
       <FlatList
         data={events}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         style={styles.scheduleList}
       />
+
       <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Event"
-          value={newEventText}
-          onChangeText={(text) => setNewEventText(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Time"
-          value={newEventTime}
-          onChangeText={(time) => setNewEventTime(time)}
-        />
+        <View style={styles.inputRow}>
+          <View style={styles.inputWrapper}>
+            <TextInput
+              style={styles.input}
+              placeholder="event"
+              value={newEventText}
+              onChangeText={(text) => setNewEventText(text)}
+            />
+          </View>
+          <View style={styles.inputWrapper}>
+            <TextInput
+              style={styles.input}
+              placeholder="time"
+              value={newEventTime}
+              onChangeText={(time) => setNewEventTime(time)}
+            />
+          </View>
+        </View>
+        <TouchableOpacity style={styles.addButton} onPress={handleAddEvent}>
+          <Text style={styles.textButton}>Add Event</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.addButton} onPress={handleAddEvent}>
-        <Text>Add Event</Text>
-      </TouchableOpacity>
     </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#484847',
     padding: 16,
+  },
+  contentContainer: {
+    flex: 1,
   },
   headerText: {
     fontSize: 20,
     fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  dateText: {
+    fontSize: 18,
     marginBottom: 16,
   },
-  scheduleList: {
+  inputContainer: {
+    marginBottom: 16,
+  },
+  subheading: {
+    fontSize: 18,
+    marginBottom: 8,
+    color: 'white',
+  },
+  inputRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  inputWrapper: {
     flex: 1,
+    marginRight: 8,
+  },
+  input: {
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    paddingLeft: 8,
+    color: 'white',
+  },
+  addButton: {
+    backgroundColor: 'white',
+    padding: 16,
+    borderRadius: 3,
+    alignItems: 'center',
+    height: 89,
+    justifyContent: 'center',
+  },
+  textButton: {
+    color: "#FF5E00",
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   item: {
     flexDirection: 'row',
@@ -189,33 +259,7 @@ const styles = StyleSheet.create({
   deleteButtonText: {
     color: 'white',
   },
-  inputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 8,
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    marginRight: 8,
-    paddingLeft: 8,
-  },
-  addButton: {
-    backgroundColor: '#FF5E00',
-    padding: 16,
-    borderRadius: 8,
-    marginTop: 16,
-    alignItems: 'center',
-  },
-  backButton: {
-    backgroundColor: '#3498db',
-    padding: 16,
-    borderRadius: 8,
-    marginTop: 16,
-    alignItems: 'center',
+  scheduleList: {
   },
 });
 
