@@ -12,6 +12,7 @@ const BodyScreen = () => {
   };
 
   return (
+<<<<<<< HEAD
     <>
       <NavBar />
       <View style={styles.container}>
@@ -24,6 +25,16 @@ const BodyScreen = () => {
       </View>
       
     </>
+=======
+  <>
+  <NavBar/>
+    <View style={styles.container}>
+      <View style={styles.body}>
+      <BodyBack />
+    </View>
+  </View>
+  </>
+>>>>>>> bb27ab71ff75d2e0e11c244b1744ead2b782f1de
   );
 };
 
@@ -37,6 +48,7 @@ const styles = StyleSheet.create({
   body: {
     justifyContent: 'center',
     alignItems: 'center',
+<<<<<<< HEAD
     width: '100%',
     height: '80%', // Adjust the height as needed
   },
@@ -44,7 +56,12 @@ const styles = StyleSheet.create({
     width: '50%',
     marginTop: 50,
 
+=======
+    width: '100%', 
+    height: '100%', 
+>>>>>>> bb27ab71ff75d2e0e11c244b1744ead2b782f1de
   },
+
 });
 
 export default BodyScreen;
