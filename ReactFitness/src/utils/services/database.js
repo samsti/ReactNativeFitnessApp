@@ -1,7 +1,9 @@
-{/*
+
 
 import { enablePromise, openDatabase } from 'react-native-sqlite-storage';
 import { FitnessItem } from '../models';
+
+
 
 const tableName = 'FitnessData';
 enablePromise(true);
@@ -15,6 +17,7 @@ export const createTable = async (db) => {
   const query = `CREATE TABLE IF NOT EXISTS ${tableName}(
         value TEXT NOT NULL
     );`;
+    console.warn(query);
   await db.executeSql(query);
 };
 
@@ -34,7 +37,7 @@ export const getTodoItems = async (db) => {
   }
 };
 
-export const saveTodoItems = async (db, todoItems) => {
+export const setUser = async (db, user, ) => {
   const insertQuery =
     `INSERT OR REPLACE INTO ${tableName}(rowid, value) values` +
     todoItems.map(i => `(${i.id}, '${i.value}')`).join(',');
@@ -50,4 +53,4 @@ export const deleteTable = async (db) => {
   const query = `drop table ${tableName}`;
   await db.executeSql(query);
 };
- */}
+ 

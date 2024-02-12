@@ -35,9 +35,19 @@ const CalendarScreen = () => {
   const renderItem = ({ item }) => {
     return (
       <View style={styles.item}>
-        <View>
-          <Text>Muscle Part: {item.text}</Text>
-          <Text>Time: {item.time}</Text>
+        <View style={styles.scheduleList}>
+          <View style={styles.rowContainer}>
+            <View style={styles.labelContainer}>
+              <Text style={styles.label}>muscle Part</Text>
+            </View>
+            <Text style={styles.label}>time</Text>
+          </View>
+          <View style={styles.rowContainer}>
+            <View style={styles.labelContainer}>
+            <Text style={styles.value}>{item.text}</Text>
+            </View>
+            <Text style={styles.value}>{item.time}</Text>
+          </View>
         </View>
         <TouchableOpacity style={styles.deleteButton} onPress={() => handleDeleteEvent(item.id)}>
           <Text style={styles.deleteButtonText}>Delete</Text>
@@ -45,6 +55,7 @@ const CalendarScreen = () => {
       </View>
     );
   };
+  
 
   const handleDeleteEvent = async (eventId) => {
     const updatedEvents = events.filter((event) => event.id !== eventId);
@@ -135,7 +146,7 @@ const CalendarScreen = () => {
 
   // Function to get the name of the day
   const getDayName = (date) => {
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const days = ['(Sunday)', '(Monday)', '(Tuesday)', '(Wednesday)', '(Thursday)', '(Friday)', '(Saturday)'];
     const selectedDate = new Date(date);
     const dayIndex = selectedDate.getDay();
     return days[dayIndex];
@@ -192,16 +203,23 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   contentContainer: {
-    flex: 1,
+   
+   
   },
   headerText: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: 'bold',
     marginBottom: 8,
+    color: "#FF5E00", // Added color for consistency
   },
   dateText: {
-    fontSize: 18,
+    fontSize: 20,
     marginBottom: 16,
+    color: "#FF5E00",// Added color for consistency
+  },
+  value: {
+    color: 'white', // Example color
+    fontSize: 20, // Example font size
   },
   inputContainer: {
     marginBottom: 16,
@@ -245,10 +263,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#e0e0e0',
-    marginBottom: 8,
+    marginRight: 16,
     borderRadius: 8,
+    marginBottom: 30,
   },
   deleteButton: {
     backgroundColor: '#FF0000',
@@ -260,6 +277,23 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   scheduleList: {
+    display: "inline-block",
+   
+  
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  labelContainer: {
+    width: 100,
+    marginRight: 135,
+  },
+  label: {
+    color: "#FF5E00",
+    fontSize: 16,
+    textDecorationLine: "underline",
+    
   },
 });
 
