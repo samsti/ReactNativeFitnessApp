@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, TextInput, StyleSheet, Alert } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, TextInput, StyleSheet, Alert, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import NavBar from '../navBar/navBar';
@@ -50,7 +50,7 @@ const CalendarScreen = () => {
           </View>
         </View>
         <TouchableOpacity style={styles.deleteButton} onPress={() => handleDeleteEvent(item.id)}>
-          <Text style={styles.deleteButtonText}>Delete</Text>
+          <Image source={require('../../assets/images/trash.png')} style={styles.icon}  />
         </TouchableOpacity>
       </View>
     );
@@ -268,9 +268,6 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   deleteButton: {
-    backgroundColor: '#FF0000',
-    padding: 8,
-    borderRadius: 8,
     alignItems: 'center',
   },
   deleteButtonText: {
@@ -278,22 +275,24 @@ const styles = StyleSheet.create({
   },
   scheduleList: {
     display: "inline-block",
-   
-  
   },
   rowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   labelContainer: {
-    width: 100,
-    marginRight: 135,
+    width: 130,
+    marginRight: 90,
   },
   label: {
     color: "#FF5E00",
     fontSize: 16,
     textDecorationLine: "underline",
     
+  },
+  icon: {
+    width: 40,
+    height: 40,
   },
 });
 
