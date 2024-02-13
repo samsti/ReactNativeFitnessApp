@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, StyleSheet, Alert, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import NavBar from '../navBar/navBar';
+import NavBar from '../../components/navBar/navBar';
 
 const CalendarScreen = () => {
   const [events, setEvents] = useState([]);
@@ -156,6 +156,9 @@ const CalendarScreen = () => {
     <>
     <NavBar />
     <View style={styles.container}>
+    <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+      <Image source={require('../../assets/images/undo.png')} style={styles.backIcon}  />
+    </TouchableOpacity>
       <View style={styles.contentContainer}>
         <Text style={styles.headerText}>TODAY'S WORKOUT</Text>
         <Text style={styles.dateText}>{getFormattedDate(selectedDate)} {getDayName(selectedDate)}</Text>
@@ -188,7 +191,7 @@ const CalendarScreen = () => {
           </View>
         </View>
         <TouchableOpacity style={styles.addButton} onPress={handleAddEvent}>
-          <Text style={styles.textButton}>Add Event</Text>
+          <Text style={styles.textButton}>add event</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -205,6 +208,10 @@ const styles = StyleSheet.create({
   contentContainer: {
    
    
+  },
+  backIcon: {
+    width: 35,
+    height: 35,
   },
   headerText: {
     fontSize: 30,

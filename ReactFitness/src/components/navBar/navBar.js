@@ -21,7 +21,7 @@ const NavBar = ({  }) => {
       <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('Home')}>
         <Image source={require('../../assets/images/calendar.png')} style={styles.icon}  />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('')}>
+      <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('User')}>
         <Image source={require('../../assets/images/user_nav.png')} style={styles.icon}  />
       </TouchableOpacity>
     </View>
