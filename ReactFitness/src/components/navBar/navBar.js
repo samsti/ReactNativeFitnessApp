@@ -12,7 +12,7 @@ const NavBar = ({  }) => {
       <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('Body')}>
         <Image source={require('../../assets/images/cviky.png')} style={styles.icon}  />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('')}>
+      <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('MealPlan')}>
         <Image source={require('../../assets/images/jidelnicek.png')} style={styles.icon}  />
       </TouchableOpacity>
       <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('Home')}>
