@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button, Image, TouchableOpacity } from 'react-native';
 import Body from '../../components/BodySvg';
 import BodyBack from '../../components/BodyBackSvg';
 import NavBar from '../../components/navBar';
@@ -19,7 +19,9 @@ const BodyScreen = () => {
           {showFrontBody ? <Body /> : <BodyBack />}
         </View>
         <View style={styles.buttonContainer}>
-          <Button title="Rotate Body" onPress={toggleBody} color="#FF5E00" />
+          <TouchableOpacity onPress={toggleBody}>
+            <Image source={require('../../assets/images/recycle.png')} style={styles.rotateIcon}  />
+          </TouchableOpacity>
         </View>
       </View>
   </>
@@ -40,10 +42,15 @@ const styles = StyleSheet.create({
     height: '80%', // Adjust the height as needed
   },
   buttonContainer: {  // Adjust spacing as needed
-    width: '50%',
-    marginTop: 50,
+    marginTop: 30,
+    justifyContent: 'center',
   },
-
+  rotateIcon: {
+    height: 50,
+    width: 50,
+    justifyContent: 'center',
+    marginBottom: -20,
+  },
 });
 
 export default BodyScreen;
