@@ -80,10 +80,10 @@ const styles = StyleSheet.create({
   overlayText: {
     position: 'absolute',
     color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 24,
+    fontFamily: "Rajdhani-Bold",
     textAlign: 'center',
-    bottom: 70,
+    bottom: 60,
     left: 230,
     right: 0,
     zIndex: 1, // Ensure the overlay text appears above the image
@@ -113,6 +113,8 @@ const styles = StyleSheet.create({
   heading :{
     fontSize: 15,
     color: '#FF5E00',
+    fontFamily: "Rajdhani-SemiBold",
+    letterSpacing: 2.1,
 
   }
 });

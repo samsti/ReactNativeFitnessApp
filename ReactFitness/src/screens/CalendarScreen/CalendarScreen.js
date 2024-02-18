@@ -146,7 +146,7 @@ const CalendarScreen = () => {
 
   // Function to get the name of the day
   const getDayName = (date) => {
-    const days = ['(Sunday)', '(Monday)', '(Tuesday)', '(Wednesday)', '(Thursday)', '(Friday)', '(Saturday)'];
+    const days = ['(sunday)', '(monday)', '(tuesday)', '(wednesday)', '(thursday)', '(friday)', '(saturday)'];
     const selectedDate = new Date(date);
     const dayIndex = selectedDate.getDay();
     return days[dayIndex];
@@ -205,28 +205,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#484847',
     padding: 16,
   },
-  contentContainer: {
-   
-   
-  },
   backIcon: {
     width: 35,
     height: 35,
   },
   headerText: {
     fontSize: 30,
-    fontWeight: 'bold',
+    fontFamily: "Rajdhani-Bold",
     marginBottom: 8,
-    color: "#FF5E00", // Added color for consistency
+    color: "#FF5E00",
+    marginBottom: 0, // Added color for consistency
   },
   dateText: {
     fontSize: 20,
+    fontFamily: "Rajdhani-Regular",
     marginBottom: 16,
     color: "#FF5E00",// Added color for consistency
   },
   value: {
     color: 'white', // Example color
     fontSize: 20, // Example font size
+    fontFamily: "Rajdhani-Medium",
   },
   inputContainer: {
     marginBottom: 16,
@@ -235,6 +234,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 8,
     color: 'white',
+   
   },
   inputRow: {
     flexDirection: 'row',
@@ -252,6 +252,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingLeft: 8,
     color: 'white',
+    fontFamily: "Rajdhani-Medium",
   },
   addButton: {
     backgroundColor: 'white',
@@ -264,7 +265,7 @@ const styles = StyleSheet.create({
   textButton: {
     color: "#FF5E00",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: "Rajdhani-Bold",
   },
   item: {
     flexDirection: 'row',
@@ -273,12 +274,6 @@ const styles = StyleSheet.create({
     marginRight: 16,
     borderRadius: 8,
     marginBottom: 30,
-  },
-  deleteButton: {
-    alignItems: 'center',
-  },
-  deleteButtonText: {
-    color: 'white',
   },
   scheduleList: {
     display: "inline-block",
@@ -294,7 +289,9 @@ const styles = StyleSheet.create({
   label: {
     color: "#FF5E00",
     fontSize: 16,
+    fontFamily: "Rajdhani-Medium",
     textDecorationLine: "underline",
+    marginBottom: 15,
     
   },
   icon: {

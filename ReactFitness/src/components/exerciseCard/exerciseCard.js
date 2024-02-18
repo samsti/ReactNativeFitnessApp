@@ -102,14 +102,14 @@ const styles = StyleSheet.create({
   },
   exerciseName: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: "Rajdhani-Bold",
     textAlign: 'center',
     marginTop: 8,
     color: 'white',
   },
   sectionHeading: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: "Rajdhani-Bold",
     marginTop: 8,
     color: 'white',
     textAlign: 'center',
@@ -117,12 +117,14 @@ const styles = StyleSheet.create({
   additionalInfo: {
     fontSize: 20,
     color: 'white',
+    fontFamily: "Rajdhani-Regular",
   },
   instructions: {
     fontSize: 20,
     marginTop: 8,
     color: 'white',
     textAlign: 'center',
+    fontFamily: "Rajdhani-Regular",
   },
 });
 

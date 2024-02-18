@@ -150,11 +150,10 @@ const styles = StyleSheet.create({
         marginTop: "20%",
         width: "95%",
         marginLeft: "2.5%",
-       
     },
     title:{
+      fontFamily: "Rajdhani-Bold",
       fontSize: 30, 
-      fontWeight: 'bold',
       color: "#FF5E00",
       margin: 10,
     },

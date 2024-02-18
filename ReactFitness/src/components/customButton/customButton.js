@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
   text_PRIMARY: {
     color: "#FF5E00",
     width: "100%",
+    fontFamily: "Rajdhani-Medium",
   },
 
   container_REGISTER:{
@@ -45,7 +46,8 @@ const styles = StyleSheet.create({
     color: "white",
     textAlign: "center",
     justifyContent: "center",
-    fontWeight: "bold",
+    fontFamily: "Rajdhani-Bold",
+    fontSize: 17,
   },
   container_CARD: {
     ml: '21px',

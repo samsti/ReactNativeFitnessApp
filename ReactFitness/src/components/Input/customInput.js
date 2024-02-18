@@ -51,8 +51,9 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
+    fontFamily: "Rajdhani-Medium",
     height: '100%',
-    fontSize: 13,
+    fontSize: 14,
     color: 'white',
     paddingVertical: 8, 
     backgroundColor: '#a83203',

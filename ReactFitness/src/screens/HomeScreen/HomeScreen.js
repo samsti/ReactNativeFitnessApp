@@ -88,17 +88,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'grey',
     height: '100%',
-    fontFamily: "Rajdhani",
-  },
-  footer: {
-    position: 'absolute',
-    left: 0,
-    bottom: 0,
-    width: '100%',
-    height: 70,
-    backgroundColor: 'black',
-    borderWidth: 1,
-    borderColor: 'white',
   },
   logo: {
     width: 90,
@@ -152,12 +141,12 @@ const styles = StyleSheet.create({
   workoutCounterText: {
     color: '#FF5E00',
     fontSize: 30,
-    fontWeight: 'bold',
+    fontFamily: "Rajdhani-Bold",
   },
   workoutCounterNumber: {
     color: '#FF5E00',
     fontSize: 80,
-    fontWeight: 'bold',
+    fontFamily: "Rajdhani-Bold",
     marginTop: 0,
   },
   caloriesContainer: {
@@ -169,19 +158,20 @@ const styles = StyleSheet.create({
   caloriesText: {
     color: '#FF5E00',
     fontSize: 30,
-    fontWeight: 'bold',
+    fontFamily: "Rajdhani-Bold",
     textAlign: "left",
     marginLeft: 15,
   },
   caloriesNumber: {
     color: '#FF5E00',
     fontSize: 50,
-    fontWeight: 'bold',
+    fontFamily: "Rajdhani-Bold",
     marginTop: 0,
     marginLeft: 15,
   },
   numberCaloriesText: {
     color: '#FF5E00',
+    fontFamily: "Rajdhani-Medium",
     fontSize: 20,
     textAlign: "left",
     marginLeft: 15,
