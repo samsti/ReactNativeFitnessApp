@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, SafeAreaView, StyleSheet , ScrollView, Image, KeyboardAvoidingView} from "react-native";
+import { View, Text, SafeAreaView, StyleSheet , ScrollView, Image, KeyboardAvoidingView, Alert} from "react-native";
 import Input from '../../components/Input';
 import CustomButton from '../../components/customButton';
 import Navigation from '../../navigation';
@@ -9,46 +9,70 @@ import lockIcon from '../../assets/images/zamek.png';
 import ageIcon from '../../assets/images/age_icon.png';
 import heightIcon from '../../assets/images/height_icon.png';
 import weightIcon from '../../assets/images/weight_icon.png';
+import firestore from '@react-native-firebase/firestore';
 
-// require('../../assets/images/user.png'
 
 
 const RegisterScreen = () => {
-  const [Username, setUsername] = useState('');
+  const [username, setUsername] = useState('');
   const [Password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [PasswordRepeat, setPasswordRepeat] = useState('');
   const [iconImage, setIconImage] = useState('');
   const [age, setAge] = useState('');
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
 
+  const navigation = useNavigation();
+
+  const signUpTest = () => {
+    firestore()
+      .collection('user')
+      .add({
+        username,
+        Password,
+        email,
+        age,
+        weight,
+        height,
+      })
+      .then(() => {
+        Alert.alert("User Created");
+        navigation.navigate('LogIn');
+      })
+      .catch(err => {
+        Alert.alert("Error creating user", err.message);
+      });
+  };
+
   const handleImageChange = (text) => {
     // Update the state with the new image URL entered in the TextInput
     setIconImage(text);
   };
 
-  const navigation = useNavigation();
-
-    const onRegisterPressed = () => {
-      console.warn("Log in")
-
-      navigation.navigate('Home');
-    };
-
-    const onHaveAccount = () => {
-      console.warn("Sign in")
-
-      navigation.navigate('LogIn');
-    };
+  const onHaveAccount = () => {
+    console.warn("Sign in");
+    navigation.navigate('LogIn');
+  };
 
   return (
     <KeyboardAvoidingView behavior="height" contentContainerStyle={{ flex: 1}} style={styles.root}>
       <Text style={styles.title}>Create an account</Text>
         <Input 
         placeholder="Username" 
-        value={Username} 
+        value={username} 
         imageValue={iconImage}
         setValue={setUsername} 
+        secureTextEntry={false}
+        imageSource={iconImage !== '' ? { uri: iconImage } : userIcon}
+        type="REGISTER" 
+        />
+
+        <Input 
+        placeholder="Email" 
+        value={email} 
+        imageValue={iconImage}
+        setValue={setEmail} 
         secureTextEntry={false}
         imageSource={iconImage !== '' ? { uri: iconImage } : userIcon}
         type="REGISTER" 
@@ -103,7 +127,7 @@ const RegisterScreen = () => {
 
       <CustomButton 
       text="Register" 
-      onPress={onRegisterPressed} 
+      onPress={signUpTest} 
       type="REGISTER" 
       />
       <CustomButton 
@@ -126,6 +150,7 @@ const styles = StyleSheet.create({
         marginTop: "20%",
         width: "95%",
         marginLeft: "2.5%",
+       
     },
     title:{
       fontSize: 30, 

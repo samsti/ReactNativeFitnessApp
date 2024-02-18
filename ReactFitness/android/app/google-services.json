@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "215623757875",
+    "project_id": "reactnativefitnessapp",
+    "storage_bucket": "reactnativefitnessapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215623757875:android:5d09c6be01597627f37346",
+        "android_client_info": {
+          "package_name": "com.reactfitness"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaq0a7vA__9nCKUnWbwGiWYB5Pz4yV40U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
