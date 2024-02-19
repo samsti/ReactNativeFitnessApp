@@ -1,25 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ActivityIndicator, ViewPropTypes } from "react-native";
 import NavBar from "../../components/navBar/navBar";
-import { getAuth, onAuthStateChanged } from "@react-native-firebase/auth";
-import firestore from "firebase/firestore";
+import firestore from '@react-native-firebase/firestore';
+import PropTypes from 'prop-types'; // Import PropTypes from the 'prop-types' package
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const UserScreen = () => {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserData(user);
-        firestore.collection(user).doc(user.uid);
-        console.warn(firestore.collection(user).doc(user.uid))
-      } else {
-        setUserData(null);
-      }
-    });
+    const fetchUserData = async () => {
+      try {
+        // Retrieve the username from AsyncStorage
+        const username = await AsyncStorage.getItem('username');
 
-    return () => unsubscribe();
+        // Retrieve the user with the provided username from Firestore
+        const userSnapshot = await firestore().collection('user').where('username', '==', username).get();
+        
+        if (!userSnapshot.empty) {
+          const userData = userSnapshot.docs[0].data();
+          setUserData(userData);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   return (
@@ -32,14 +39,13 @@ const UserScreen = () => {
             style={styles.logo}
           />
         </View>
-        <Text style={styles.username}>{userData ? userData.displayName : ""}</Text>
+        <Text style={styles.username}>{userData ? userData.username : ""}</Text>
 
         <View style={styles.inputContainer}>
           <Text style={styles.headings}>USERNAME</Text>
           <TextInput
             style={styles.input}
-            value={userData ? userData.uid : ""}
-            editable={false}
+            value={userData ? userData.username : ""}
           />
         </View>
 
@@ -47,8 +53,7 @@ const UserScreen = () => {
           <Text style={styles.headings}>AGE</Text>
           <TextInput
             style={styles.input}
-            value="25" // Example value, replace with actual age data if available
-            editable={false}
+            value={userData ? userData.age : ""}
           />
         </View>
 
@@ -56,8 +61,7 @@ const UserScreen = () => {
           <Text style={styles.headings}>HEIGHT (cm)</Text>
           <TextInput
             style={styles.input}
-            value="180" // Example value, replace with actual height data if available
-            editable={false}
+            value={userData ? userData.height : ""}
           />
         </View>
 
@@ -65,8 +69,7 @@ const UserScreen = () => {
           <Text style={styles.headings}>WEIGHT (kg)</Text>
           <TextInput
             style={styles.input}
-            value="70" // Example value, replace with actual weight data if available
-            editable={false}
+            value={userData ? userData.weight : ""}
           />
         </View>
 
@@ -74,8 +77,7 @@ const UserScreen = () => {
           <Text style={styles.headings}>KCAL PER DAY</Text>
           <TextInput
             style={styles.input}
-            value="2800" // Example value, replace with actual kcal data if available
-            editable={false}
+            value={userData ? userData.kcalPerDay : ""}
           />
         </View>
 
@@ -87,11 +89,20 @@ const UserScreen = () => {
   );
 };
 
+UserScreen.propTypes = {
+  style: ViewPropTypes.style, // Use ViewPropTypes instead of PropTypes
+};
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#484847",
     flex: 1,
     alignItems: "center",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   headings: {
     textAlign: "left",

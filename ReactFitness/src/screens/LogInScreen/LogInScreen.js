@@ -7,6 +7,8 @@ import userIcon from '../../assets/images/user.png';
 import lockIcon from '../../assets/images/zamek.png';
 import logo from '../../assets/images/logo_login.png';
 import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
+
 
 
 const LogInScreen = () => {
@@ -41,6 +43,9 @@ const LogInScreen = () => {
       // If everything is correct, navigate to Home screen
       navigation.navigate('Home');
       Alert.alert('Logged in successfully');
+      await AsyncStorage.setItem('username', username);
+      //console.warn(username);
+
     } catch (error) {
       console.error('Sign-in error:', error);
       Alert.alert('Sign-in Error', 'An error occurred during sign-in. Please try again.');
