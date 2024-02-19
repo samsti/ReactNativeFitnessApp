@@ -25,24 +25,28 @@ const RegisterScreen = () => {
 
   const navigation = useNavigation();
 
-  const signUpTest = () => {
-    firestore()
-      .collection('user')
-      .add({
+  const signUpTest = async () => {
+    try {
+      if (!username || !Password || !email || !age || !weight || !height) {
+        throw new Error('Please fill in all fields');
+      }
+  
+      // Add user data to Firestore
+      await firestore().collection('user').add({
         username,
         Password,
         email,
         age,
         weight,
         height,
-      })
-      .then(() => {
-        Alert.alert("User Created");
-        navigation.navigate('LogIn');
-      })
-      .catch(err => {
-        Alert.alert("Error creating user", err.message);
       });
+  
+      Alert.alert("User Created");
+      navigation.navigate('LogIn');
+    } catch (error) {
+      console.error('Sign-up error:', error);
+      Alert.alert("Please, fill all the fields", error.message);
+    }
   };
 
   const handleImageChange = (text) => {

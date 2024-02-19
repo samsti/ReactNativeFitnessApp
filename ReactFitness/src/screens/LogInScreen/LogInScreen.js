@@ -1,60 +1,73 @@
-import React, {useState} from 'react';
-import { View, Text, SafeAreaView, Image, StyleSheet , useWindowDimensions, ScrollView, KeyboardAvoidingView} from "react-native";
+import React, { useState } from 'react';
+import { View, Image, StyleSheet, KeyboardAvoidingView, Alert } from "react-native";
 import Input from '../../components/Input';
 import CustomButton from '../../components/customButton';
 import { useNavigation } from '@react-navigation/native';
 import userIcon from '../../assets/images/user.png';
 import lockIcon from '../../assets/images/zamek.png';
 import logo from '../../assets/images/logo_login.png';
-import HomeScreen from '../HomeScreen';
+import firestore from '@react-native-firebase/firestore';
 
 
 const LogInScreen = () => {
-  const [Username, setUsername] = useState('');
+  const [username, setUsername] = useState('');
   const [Password, setPassword] = useState('');
-  const [PasswordRepeat, setPasswordRepeat] = useState('');
-  const [iconImage, setIconImage] = useState('');
+  const navigation = useNavigation();
 
-  const handleImageChange = (text) => {
-    // Update the state with the new image URL entered in the TextInput
-    setIconImage(text);
-  };
-    const {height} = useWindowDimensions();
-    const navigation = useNavigation();
+  const onLogInPressed = async () => {
+    if (!username || !Password) {
+      Alert.alert('Invalid Input', 'Please fill in both username and password fields');
+      return;
+    }
 
-    const onLogInPressed = () => {
-      console.warn("Log in")
+    try {
+      // Retrieve the user with the provided username from Firestore
+      const userSnapshot = await firestore().collection('user').where('username', '==', username).get();
+      
+      if (userSnapshot.empty) {
+        Alert.alert('Invalid Input', 'User not found');
+        return;
+      }
 
+      // Assuming there's only one user with the provided username, retrieve the user data
+      const userData = userSnapshot.docs[0].data();
+
+      // Check if the provided password matches the stored password
+      if (Password !== userData.Password) {
+        Alert.alert('Invalid Input', 'Username or password is incorrect');
+        return;
+      }
+
+      // If everything is correct, navigate to Home screen
       navigation.navigate('Home');
-    };
-
-    const onDontHaveAccount = () => {
-      console.warn("Create Account")
-
-      navigation.navigate('Register');
-    };
-
-    
+      Alert.alert('Logged in successfully');
+    } catch (error) {
+      console.error('Sign-in error:', error);
+      Alert.alert('Sign-in Error', 'An error occurred during sign-in. Please try again.');
+    }
+  };
+  
+  const onDontHaveAccount = () => {
+    navigation.navigate('Register');
+  };
 
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView behavior="height" contentContainerStyle={{ flex: 1}} style={styles.root}>
-      <Image source={logo} style={styles.logo} />
+        <Image source={logo} style={styles.logo} />
         <Input 
           placeholder="Username" 
-          value={Username} 
-          imageValue={iconImage}
+          value={username} 
           setValue={setUsername} 
           secureTextEntry={false}
-          imageSource={iconImage !== '' ? { uri: iconImage } : userIcon}
+          imageSource={userIcon}
         />
         <Input 
           placeholder="Password" 
           value={Password} 
-          imageValue={iconImage}
           setValue={setPassword} 
           secureTextEntry={true}
-          imageSource={iconImage !== '' ? { uri: iconImage } : lockIcon}
+          imageSource={lockIcon}
         />
         <CustomButton text="Sign in" onPress={onLogInPressed} />
         <CustomButton 
@@ -65,31 +78,26 @@ const LogInScreen = () => {
       </KeyboardAvoidingView>
     </View>
   );
-  };
-  
-  const styles = StyleSheet.create({
-      root: {
-          alignItems: 'center',
-          borderRadius: 5,
-          backgroundColor: "black",
-          justifyContent: 'center',
-          width: "95%",
-          height: "50%",
-          marginTop: "50%",
-          marginBottom: "50%",
-          marginLeft: "2.5%",
-      
-      },
-      logo: {
-        marginTop: "-40%",
-        width: 150,
-        height: 150,
-      },
-      container: {
-        
-      },
-  });
-  
-  export default LogInScreen;
-  
-  
+};
+
+const styles = StyleSheet.create({
+  root: {
+    alignItems: 'center',
+    borderRadius: 5,
+    backgroundColor: "black",
+    justifyContent: 'center',
+    width: "95%",
+    height: "50%",
+    marginTop: "50%",
+    marginBottom: "50%",
+    marginLeft: "2.5%",
+  },
+  logo: {
+    marginTop: "-40%",
+    width: 150,
+    height: 150,
+  },
+  container: {},
+});
+
+export default LogInScreen;

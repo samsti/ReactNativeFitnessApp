@@ -2,7 +2,12 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from "react-native";
 import NavBar from "../../components/navBar/navBar";
 
+
 const UserScreen = () => {
+
+  const uID = firebase.auth().currentUser.uid;
+  const user = firestore.collection('user').getDocs(uID);
+
   return (
     <>
       <NavBar />
@@ -13,7 +18,7 @@ const UserScreen = () => {
             style={styles.logo}
           />
         </View>
-        <Text style={styles.username}>Sam Sulek</Text>
+        <Text style={styles.username}>{user.username}</Text>
         
         <View style={styles.inputContainer}>
             <Text style={styles.headings}>USERNAME</Text>
@@ -32,7 +37,7 @@ const UserScreen = () => {
         </View>
 
         <View style={styles.inputContainer}>
-        <Text style={styles.headings}>HEIGHT</Text>
+        <Text style={styles.headings}>HEIGHT (cm)</Text>
             <TextInput
             style={styles.input}
             value="180"
@@ -40,7 +45,7 @@ const UserScreen = () => {
         </View>
         
         <View style={styles.inputContainer}>
-        <Text style={styles.headings}>WEIGHT</Text>
+        <Text style={styles.headings}>WEIGHT (kg)</Text>
             <TextInput
             style={styles.input}
             value="70"
@@ -48,7 +53,7 @@ const UserScreen = () => {
         </View>
 
         <View style={styles.inputContainer}>
-        <Text style={styles.headings}>KILOCALORIES PER DAY</Text>
+        <Text style={styles.headings}>KCAL PER DAY</Text>
             <TextInput
             style={styles.input}
             value="2800"
@@ -74,6 +79,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#FF5E00",
     marginTop: 5,
+    fontFamily: "Rajdhani-Medium",
   },
   inputContainer: {
     width: "100%",
@@ -104,11 +110,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 5,
     fontSize: 16,
+    fontFamily: "Rajdhani-Medium",
   },
   username: {
     fontSize: 24,
     color: "white",
-    fontWeight: "bold",
+    fontFamily: "Rajdhani-Bold",
     marginTop: 10,
   },
   addButton: {
