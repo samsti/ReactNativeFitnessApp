@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from "react-native";
 import NavBar from "../../components/navBar/navBar";
-
+import { getAuth, onAuthStateChanged } from "@react-native-firebase/auth";
+import firestore from "firebase/firestore";
 
 const UserScreen = () => {
+  const [userData, setUserData] = useState(null);
 
-  const uID = firebase.auth().currentUser.uid;
-  const user = firestore.collection('user').getDocs(uID);
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserData(user);
+        firestore.collection(user).doc(user.uid);
+        console.warn(firestore.collection(user).doc(user.uid))
+      } else {
+        setUserData(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <>
@@ -18,47 +32,53 @@ const UserScreen = () => {
             style={styles.logo}
           />
         </View>
-        <Text style={styles.username}>{user.username}</Text>
-        
+        <Text style={styles.username}>{userData ? userData.displayName : ""}</Text>
+
         <View style={styles.inputContainer}>
-            <Text style={styles.headings}>USERNAME</Text>
-                <TextInput
-                style={styles.input}
-                value="Sam Sulek"
-                />
-        </View>
-    
-        <View style={styles.inputContainer}>
-        <Text style={styles.headings}>AGE</Text>
-            <TextInput
+          <Text style={styles.headings}>USERNAME</Text>
+          <TextInput
             style={styles.input}
-            value="25"
-            />
+            value={userData ? userData.uid : ""}
+            editable={false}
+          />
         </View>
 
         <View style={styles.inputContainer}>
-        <Text style={styles.headings}>HEIGHT (cm)</Text>
-            <TextInput
+          <Text style={styles.headings}>AGE</Text>
+          <TextInput
             style={styles.input}
-            value="180"
-            />
-        </View>
-        
-        <View style={styles.inputContainer}>
-        <Text style={styles.headings}>WEIGHT (kg)</Text>
-            <TextInput
-            style={styles.input}
-            value="70"
-            />
+            value="25" // Example value, replace with actual age data if available
+            editable={false}
+          />
         </View>
 
         <View style={styles.inputContainer}>
-        <Text style={styles.headings}>KCAL PER DAY</Text>
-            <TextInput
+          <Text style={styles.headings}>HEIGHT (cm)</Text>
+          <TextInput
             style={styles.input}
-            value="2800"
-            />
+            value="180" // Example value, replace with actual height data if available
+            editable={false}
+          />
         </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.headings}>WEIGHT (kg)</Text>
+          <TextInput
+            style={styles.input}
+            value="70" // Example value, replace with actual weight data if available
+            editable={false}
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.headings}>KCAL PER DAY</Text>
+          <TextInput
+            style={styles.input}
+            value="2800" // Example value, replace with actual kcal data if available
+            editable={false}
+          />
+        </View>
+
         <TouchableOpacity style={styles.addButton}>
           <Text style={styles.textButton}>save</Text>
         </TouchableOpacity>
@@ -70,8 +90,7 @@ const UserScreen = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#484847",
-    height: "100%",
-    width: "100%",
+    flex: 1,
     alignItems: "center",
   },
   headings: {
@@ -119,19 +138,19 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   addButton: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 16,
     borderRadius: 3,
-    alignItems: 'center',
+    alignItems: "center",
     height: 89,
-    justifyContent: 'center',
+    justifyContent: "center",
     width: "80%",
     marginTop: 20,
   },
   textButton: {
     color: "#FF5E00",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 
