@@ -11,6 +11,7 @@ const BodySvg = () => {
   const handleMuscleClick = (muscleId) => {
     setSelectedMuscle(muscleId);
     navigation.navigate('Exercises', { selectedMuscle: muscleId });
+    console.warn('Selected Muscle in Trainings:', selectedMuscle);
   };
 
   const [showBodyBack, setShowBodyBack] = useState(false);

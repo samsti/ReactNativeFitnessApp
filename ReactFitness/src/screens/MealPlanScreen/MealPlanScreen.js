@@ -9,9 +9,18 @@ const MealPlanScreen = () => {
   const [selectedWeight, setSelectedWeight] = useState('');
   const [nutritionInfo, setNutritionInfo] = useState(null);
 
+ 
   const handleSearch = (query) => {
-    setSearchQuery(query);
+      setSearchQuery(query);
   };
+
+  const toggle = () => {
+    return !value;
+  }
+
+
+  let value = false;
+
 
   const handleFetchComplete = (data) => {
     setNutritionInfo(data);
@@ -41,7 +50,11 @@ const MealPlanScreen = () => {
         value={searchQuery}
         onChangeText={handleSearch}
       />
-      
+
+      <TouchableOpacity onPress={toggle}>
+        <Text>VYHLEDAT</Text>
+      </TouchableOpacity>
+
       {/* Fetch data from Nutrition API based on search query */}
       <NutritionDataFetcher searchQuery={searchQuery} onFetchComplete={handleFetchComplete} />
 

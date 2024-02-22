@@ -1,38 +1,47 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import Navigation from "../../navigation";
 import { useNavigation } from '@react-navigation/native';
 
-
-
 const TrainingsSlider = () => {
+  const [activeSlide, setActiveSlide] = useState(0);
+  const navigation = useNavigation();
+
+  const [selectedMuscle, setSelectedMuscle] = useState('');
+
+  const handleMuscleClick = (muscleId) => {
+    setSelectedMuscle(muscleId);
+    navigation.navigate('Exercises', { selectedMuscle: muscleId });
+    console.warn('Selected Muscle in Trainings:', selectedMuscle);
+  };
+
   const workouts = [
-    { id: 1, title: 'Chest \n' + '&' + 'Triceps', image: require('../../assets/images/workouts.jpg') },
-    { id: 2, title: 'Back \n' + '&' + 'Biceps', image: require('../../assets/images/workouts.jpg') },
-    { id: 3, title: 'Shoulders \n' + '&' + 'Traps', image: require('../../assets/images/workouts.jpg') },
-    { id: 4, title: 'Legs \n' + '&' + 'Abs', image: require('../../assets/images/workouts.jpg') },
+  
+    { id: 1, title: 'Chest \n' + '&' + 'Triceps', image: require('../../assets/images/workouts.jpg'), selectedMuscle: ['Chest', 'Triceps'] },
+    { id: 2, title: 'Back \n' + '&' + 'Biceps', image: require('../../assets/images/workouts.jpg'), selectedMuscle: ['Back', 'Biceps'] },
+    { id: 3, title: 'Shoulders \n' + '&' + 'Traps', image: require('../../assets/images/workouts.jpg'), selectedMuscle: ['Shoulders', 'Traps'] },
+    { id: 4, title: 'Legs \n' + '&' + 'Abs', image: require('../../assets/images/workouts.jpg'), selectedMuscle: ['Legs', 'Abs'] },
     // Add more workouts as needed
   ];
 
-  const [activeSlide, setActiveSlide] = React.useState(0);
-
-  const navigation = useNavigation();
-
-
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
-    style={styles.slide}
-    onPress={() => handleSlidePress(index)}
+      style={styles.slide}
+      onPress={() => handleSlidePress(item)}
     >
-       <Text style={styles.heading}>our trainings</Text>
+      <Text style={styles.heading}>our trainings</Text>
       <Text style={styles.overlayText}>{item.title}</Text>
       <Image source={item.image} style={styles.backgroundImage} />
     </TouchableOpacity>
   );
 
-  const handleSlidePress = (index) => {
-    navigation.navigate('Body');
+  const handleSlidePress = (item) => {
+    console.log('Selected Muscle:', item.selectedMuscle);
+    if (Array.isArray(item.selectedMuscle)) {
+      navigation.navigate('Trainings', { selectedMuscle: item.selectedMuscle });
+    } else {
+      navigation.navigate('Trainings', { selectedMuscle: item.selectedMuscle });
+    }
   };
 
   return (
@@ -59,7 +68,6 @@ const TrainingsSlider = () => {
   );
 };
 
-
 const styles = StyleSheet.create({
   slide: {
     width: 380,
@@ -81,7 +89,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     color: 'white',
     fontSize: 24,
-    fontFamily: "Rajdhani-Bold",
+    fontFamily: 'Rajdhani-Bold',
     textAlign: 'center',
     bottom: 60,
     left: 230,
@@ -91,7 +99,6 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 2, height: 2 }, // Shadow offset
     textShadowRadius: 5, // Shadow radius
   },
-  
   paginationContainer: {
     position: 'absolute',
     alignSelf: 'center',
@@ -110,13 +117,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
     backgroundColor: 'white',
   },
-  heading :{
+  heading: {
     fontSize: 15,
     color: '#FF5E00',
-    fontFamily: "Rajdhani-SemiBold",
+    fontFamily: 'Rajdhani-SemiBold',
     letterSpacing: 2.1,
-
-  }
+  },
 });
 
 export default TrainingsSlider;

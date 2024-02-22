@@ -152,6 +152,14 @@ const CalendarScreen = () => {
     return days[dayIndex];
   };
 
+  const handleTimeChange = (time) => {
+    // Format the time input to include ":" after two numbers
+    if (time.length === 2 && !time.includes(':')) {
+      time += ':';
+    }
+    setNewEventTime(time);
+  };
+
   return (
     <>
     <NavBar />
@@ -186,7 +194,8 @@ const CalendarScreen = () => {
               style={styles.input}
               placeholder="time"
               value={newEventTime}
-              onChangeText={(time) => setNewEventTime(time)}
+              onChangeText={handleTimeChange} // Updated to call handleTimeChange
+              keyboardType='numeric'
             />
           </View>
         </View>

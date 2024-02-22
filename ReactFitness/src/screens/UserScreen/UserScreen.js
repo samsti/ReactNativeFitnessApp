@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ActivityIndicator, ViewPropTypes, Alert } from "react-native";
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import NavBar from "../../components/navBar/navBar";
 import firestore from '@react-native-firebase/firestore';
-import PropTypes from 'prop-types'; // Import PropTypes from the 'prop-types' package
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const UserScreen = () => {
@@ -113,10 +112,6 @@ const UserScreen = () => {
       </View>
     </>
   );
-};
-
-UserScreen.propTypes = {
-  style: ViewPropTypes.style, // Use ViewPropTypes instead of PropTypes
 };
 
 const styles = StyleSheet.create({
