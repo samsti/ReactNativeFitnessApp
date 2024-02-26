@@ -5,7 +5,7 @@ const ExerciseDataFetcher = ({ selectedMuscle, onFetchComplete }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const rapidApiKey = '506fe99ad8mshced1e2411d3aed0p16a5a5jsn6e4ef5008bc7';
+        const rapidApiKey = 'd76c99b720msh8522d1583ecab48p15082djsna33ee0a659db';
 
         let rapidApiEndpoints = [];
 
@@ -18,16 +18,27 @@ const ExerciseDataFetcher = ({ selectedMuscle, onFetchComplete }) => {
                 rapidApiEndpoints.push('https://exercisedb.p.rapidapi.com/exercises/target/traps?limit=3');
                 break;
               case 'Chest':
-                rapidApiEndpoints.push('https://exercisedb.p.rapidapi.com/exercises/bodyPart/chest?limit=3');
-                rapidApiEndpoints.push('https://exercisedb.p.rapidapi.com/exercises/target/triceps?limit=3');
+                rapidApiEndpoints.push('https://exercisedb.p.rapidapi.com/exercises/name/incline%20barbell%20bench%20press?limit=1');
+                rapidApiEndpoints.push('https://exercisedb.p.rapidapi.com/exercises/name/lever%20chest%20press?limit=1');
+                rapidApiEndpoints.push('https://exercisedb.p.rapidapi.com/exercises/name/cable%20seated%20chest%20press?limit=1');
+
+                rapidApiEndpoints.push('https://exercisedb.p.rapidapi.com/exercises/name/barbell%20lying%20triceps%20extension%20skull%20crusher?limit=1');
+                rapidApiEndpoints.push('https://exercisedb.p.rapidapi.com/exercises/name/cable%20triceps%20pushdown%20(v-bar)?limit=1');
+                rapidApiEndpoints.push('https://exercisedb.p.rapidapi.com/exercises/name/weighted%20tricep%20dips?limit=1');
+           
                 break;
               case 'Legs':
                 rapidApiEndpoints.push('https://exercisedb.p.rapidapi.com/exercises/bodyPart/upper%20legs?limit=3');
                 rapidApiEndpoints.push('https://exercisedb.p.rapidapi.com/exercises/target/abs?limit=3');
+
                 break;
               case 'Back':
-                rapidApiEndpoints.push('https://exercisedb.p.rapidapi.com/exercises/bodyPart/back?limit=3');
+                rapidApiEndpoints.push('https://exercisedb.p.rapidapi.com/exercises/name/cable%20bar%20lateral%20pulldown?limit=1');
+                rapidApiEndpoints.push('https://exercisedb.p.rapidapi.com/exercises/name/cable%20straight%20back%20seated%20row?limit=3');
+                rapidApiEndpoints.push('https://exercisedb.p.rapidapi.com/exercises/target/back?limit=1');
+
                 rapidApiEndpoints.push('https://exercisedb.p.rapidapi.com/exercises/target/biceps?limit=3');
+
                 break;
               // Add more cases for other muscle groups if needed
               default:
