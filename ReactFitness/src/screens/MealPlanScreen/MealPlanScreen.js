@@ -90,7 +90,7 @@ const MealPlanScreen = () => {
             onChangeText={setSearchQuery} // Update searchQuery state on every text change
           />
           <TouchableOpacity onPress={handleSearch}>
-            <Text style={styles.searchButton}>VYHLEDAT</Text>
+            <Text style={styles.searchButton}>SEARCH</Text>
           </TouchableOpacity>
         </View>
 
@@ -110,39 +110,50 @@ const MealPlanScreen = () => {
             <View style={styles.nutritionRow}>
               <Text style={styles.nutritionInfo}>{nutritionInfo.name}</Text>
               <Text style={styles.nutritionInfo}>{nutritionInfo.calories}</Text>
-              <Text style={styles.nutritionInfo}>{nutritionInfo.protein_g}</Text>
-              <Text style={styles.nutritionInfo}>{nutritionInfo.fat_total_g}</Text>
-              <Text style={styles.nutritionInfo}>{nutritionInfo.carbohydrates_total_g}</Text>
+              <Text style={styles.nutritionInfo}>{nutritionInfo.protein_g}g</Text>
+              <Text style={styles.nutritionInfo}>{nutritionInfo.fat_total_g}g</Text>
+              <Text style={styles.nutritionInfo}>{nutritionInfo.carbohydrates_total_g}g</Text>
             </View>
           </View>
         )}
 
-        {/* Display meal times */}
         <View style={styles.mealTimesContainer}>
           {Object.keys(assignedFoods).map((mealTime) => (
-            <View key={mealTime} style={styles.mealTimeContainer}>
-              <TouchableOpacity onPress={() => handleMealTimeSelection(mealTime)} style={styles.mealTimeButton}>
-                <Text style={styles.mealTimeText}>{mealTime}</Text>
-              </TouchableOpacity>
+            <View key={mealTime}>
+              <View style={styles.mealTimeContainer}>
+                <TouchableOpacity onPress={() => handleMealTimeSelection(mealTime)} style={styles.mealTimeButton}>
+                  <Text style={styles.mealTimeText}>{mealTime}</Text>
+                </TouchableOpacity>
+                {/* Move the addButton inside the mealTimeContainer */}
+                <TouchableOpacity onPress={() => handleAddToMealPlan(mealTime)} style={styles.addButton}>
+                  <Text style={styles.addButtonLabel}>add</Text>
+                </TouchableOpacity>
+              </View>
+              {/* Place the assignedFoodsContainer below the mealTimeContainer */}
               {selectedMealTime === mealTime && (
                 <View style={styles.assignedFoodsContainer}>
+                  <View style={styles.assignedFoodsRow}>
+                    <Text style={styles.assignedFoodsHeader}>Food</Text>
+                    <Text style={styles.assignedFoodsHeader}>Calories</Text>
+                    <Text style={styles.assignedFoodsHeader}>Protein</Text>
+                    <Text style={styles.assignedFoodsHeader}>Fat</Text>
+                    <Text style={styles.assignedFoodsHeader}>Carbs</Text>
+                  </View>
                   {assignedFoods[mealTime].map((food, index) => (
-                    <View key={index} style={styles.assignedFoodItem}>
+                    <View key={index} style={styles.assignedFoodsRow}>
                       <Text>{food.name}</Text>
-                      <Text>Calories: {food.nutritionInfo.calories}</Text>
-                      <Text>Protein: {food.nutritionInfo.protein_g}</Text>
-                      <Text>Fat: {food.nutritionInfo.fat_total_g}</Text>
-                      <Text>Carbohydrates: {food.nutritionInfo.carbohydrates_total_g}</Text>
+                      <Text>{food.nutritionInfo.calories}</Text>
+                      <Text>{food.nutritionInfo.protein_g}g</Text>
+                      <Text>{food.nutritionInfo.fat_total_g}g</Text>
+                      <Text>{food.nutritionInfo.carbohydrates_total_g}g</Text>
                     </View>
                   ))}
                 </View>
               )}
-              <TouchableOpacity onPress={() => handleAddToMealPlan(mealTime)} style={styles.addButton}>
-                <Text style={styles.addButtonLabel}>Add</Text>
-              </TouchableOpacity>
             </View>
           ))}
         </View>
+
 
         {/* Display total calories */}
         <View style={styles.totalCaloriesContainer}>
@@ -186,7 +197,7 @@ const styles = StyleSheet.create({
   searchButton: {
     marginLeft: 8,
     padding: 10,
-    backgroundColor: 'blue',
+    backgroundColor: "#FF5E00",
     borderRadius: 8,
     color: 'white',
   },
@@ -199,11 +210,12 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   addButton: {
-    backgroundColor: 'green',
+    backgroundColor: "#FF5E00",
     borderRadius: 8,
     padding: 12,
     alignItems: 'center',
     marginBottom: 8,
+    marginLeft: 10,
   },
   addButtonLabel: {
     color: '#fff',
@@ -229,7 +241,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   nutritionInfo: {
-    flex: 1,
+
     textAlign: 'center',
   },
   nutritionHeader: {
@@ -239,7 +251,9 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   mealTimeContainer: {
-    marginBottom: 8,
+   
+    flexDirection: 'row',
+    alignItems: 'center', // Align items center
   },
   mealTimeButton: {
     padding: 10,
@@ -249,17 +263,25 @@ const styles = StyleSheet.create({
   },
   mealTimeText: {
     textAlign: 'center',
+    width: 310,
   },
   assignedFoodsContainer: {
-    marginTop: 8,
     padding: 8,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 8,
+    width: 330,
   },
-  assignedFoodItem: {
-    paddingVertical: 8,
-    textAlign: 'center', // Center the text horizontally
+  assignedFoodsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between', // Change to 'space-between' to evenly distribute items
+    marginBottom: 15,
+
+    paddingHorizontal: 10, // Add paddingHorizontal to provide space on the sides
+  },
+  assignedFoodsHeader: {
+    fontWeight: 'bold',
+    textAlign: 'center', // Center headings
   },
   resultItem: {
     padding: 16,
