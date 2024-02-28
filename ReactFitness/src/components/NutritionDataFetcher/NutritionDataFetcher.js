@@ -8,7 +8,7 @@ const NutritionDataFetcher = ({ searchQuery, onFetchComplete }) => {
         const response = await axios.get('https://nutrition-by-api-ninjas.p.rapidapi.com/v1/nutrition', {
           params: { query: searchQuery },
           headers: {
-            'X-RapidAPI-Key': 'e6f24e84fcmsh73a15b34ccce934p129cc0jsnf55d41f5c23c',
+            'X-RapidAPI-Key': 'd76c99b720msh8522d1583ecab48p15082djsna33ee0a659db',
             'X-RapidAPI-Host': 'nutrition-by-api-ninjas.p.rapidapi.com',
           },
         });

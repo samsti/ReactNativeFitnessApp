@@ -9,6 +9,7 @@ import lockIcon from '../../assets/images/zamek.png';
 import ageIcon from '../../assets/images/age_icon.png';
 import heightIcon from '../../assets/images/height_icon.png';
 import weightIcon from '../../assets/images/weight_icon.png';
+import mailIcon from '../../assets/images/mail.png';
 import firestore from '@react-native-firebase/firestore';
 
 
@@ -78,7 +79,7 @@ const RegisterScreen = () => {
         imageValue={iconImage}
         setValue={setEmail} 
         secureTextEntry={false}
-        imageSource={iconImage !== '' ? { uri: iconImage } : userIcon}
+        imageSource={iconImage !== '' ? { uri: iconImage } : mailIcon}
         type="REGISTER" 
         />
 
@@ -104,7 +105,7 @@ const RegisterScreen = () => {
         <View style ={styles.line}></View>
 
         <Input 
-        placeholder="věk"  
+        placeholder="Age"  
         value={age}  
         setValue={setAge}  
         secureTextEntry={false}
@@ -112,7 +113,7 @@ const RegisterScreen = () => {
         type="REGISTER2" 
         />
          <Input 
-        placeholder="váha"  
+        placeholder="Weight"  
         value={weight}  
         setValue={setWeight}  
         secureTextEntry={false}
@@ -120,7 +121,7 @@ const RegisterScreen = () => {
         type="REGISTER2" 
         />
         <Input 
-        placeholder="výška"  
+        placeholder="Height"  
         value={height}  
         setValue={setHeight}  
         secureTextEntry={false}

@@ -19,9 +19,9 @@ const Navigation = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="Home" component={HomeScreen}/>
-        <Stack.Screen name="Trainings" component={Trainings}/>
         <Stack.Screen name="Register" component={RegisterScreen}/>
         <Stack.Screen name="LogIn" component={LogInScreen}/>
+        <Stack.Screen name="Trainings" component={Trainings}/>
         <Stack.Screen name="MealPlan" component={MealPlanScreen}/>
         <Stack.Screen name="User" component={UserScreen}/>
         <Stack.Screen name="Calendar" component={Calendar}/>
