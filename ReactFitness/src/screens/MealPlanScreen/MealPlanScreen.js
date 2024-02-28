@@ -18,6 +18,7 @@ const MealPlanScreen = () => {
   });
   const [selectedMealTime, setSelectedMealTime] = useState(null); // State to track selected meal time
   const [totalCalories, setTotalCalories] = useState(0); // State to store total calories
+  const [weight, setWeight] = useState('');
 
   useEffect(() => {
     // Calculate total calories when assignedFoods changes
@@ -54,7 +55,8 @@ const MealPlanScreen = () => {
           calories: nutritionInfo.calories,
           protein_g: nutritionInfo.protein_g,
           fat_total_g: nutritionInfo.fat_total_g,
-          carbohydrates_total_g: nutritionInfo.carbohydrates_total_g
+          carbohydrates_total_g: nutritionInfo.carbohydrates_total_g,
+          weight: weight // Add weight to nutritionInfo
         }
       };
 
@@ -65,6 +67,7 @@ const MealPlanScreen = () => {
       }));
 
       setNutritionInfo(null); // Clear nutrition info after adding to meal plan
+      setWeight(''); // Clear weight input
     } else {
       console.log('Selected food or meal time is invalid');
     }
@@ -85,9 +88,15 @@ const MealPlanScreen = () => {
         <View style={styles.searchContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Search for a food"
+            placeholder="Search food"
             value={searchQuery}
             onChangeText={setSearchQuery} // Update searchQuery state on every text change
+          />
+          <TextInput
+            style={styles.weightInput} 
+            value={weight}
+            onChangeText={setWeight}
+            placeholder="weight(g)"
           />
           <TouchableOpacity onPress={handleSearch}>
             <Text style={styles.searchButton}>SEARCH</Text>
@@ -95,7 +104,7 @@ const MealPlanScreen = () => {
         </View>
 
         {/* Fetch data from Nutrition API based on search query only when fetchData is true */}
-        {fetchData && <NutritionDataFetcher searchQuery={searchQuery} onFetchComplete={handleFetchComplete} />}
+        {fetchData && <NutritionDataFetcher searchQuery={`${weight}g ${searchQuery} `} onFetchComplete={handleFetchComplete} />}
 
         {/* Display nutrition info */}
         {nutritionInfo && (
@@ -194,6 +203,17 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 16,
   },
+
+  weightInput: {
+    width: 100,
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    marginLeft: 10,
+  },
+
   searchButton: {
     marginLeft: 8,
     padding: 10,
@@ -241,7 +261,6 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   nutritionInfo: {
-
     textAlign: 'center',
   },
   nutritionHeader: {
@@ -251,7 +270,6 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   mealTimeContainer: {
-   
     flexDirection: 'row',
     alignItems: 'center', // Align items center
   },
@@ -276,7 +294,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between', // Change to 'space-between' to evenly distribute items
     marginBottom: 15,
-
     paddingHorizontal: 10, // Add paddingHorizontal to provide space on the sides
   },
   assignedFoodsHeader: {
