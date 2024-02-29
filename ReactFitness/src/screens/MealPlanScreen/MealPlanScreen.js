@@ -152,7 +152,7 @@ const MealPlanScreen = () => {
               <Text style={styles.nutritionHeader}>Calories</Text>
               <Text style={styles.nutritionHeader}>Protein</Text>
               <Text style={styles.nutritionHeader}>Fat</Text>
-              <Text style={styles.nutritionHeader}>Carbohydrates</Text>
+              <Text style={styles.nutritionHeader}>Carbs</Text>
             </View>
             <View style={styles.nutritionRow}>
               <Text style={styles.nutritionInfo}>{nutritionInfo.name}</Text>
@@ -246,6 +246,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#484847',
   },
   searchContainer: {
+    marginTop: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -331,25 +332,31 @@ const styles = StyleSheet.create({
     marginTop: 16,
     backgroundColor: '#ffff',
     borderRadius: 4,
+    marginBottom: 16,
   },
   nutritionRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginBottom: 8,
-    fontFamily: "Rajdhani-Bold",
-   
   },
   nutritionInfo: {
     textAlign: 'center',
     fontFamily: "Rajdhani-Bold",
+    marginRight: 30,
+    marginLeft: 23,
+    fontSize: 15,
+   
+
   },
   nutritionHeader: {
-    fontFamily: "Rajdhani-Bold",
-   
+    fontFamily: "Rajdhani-Regular",
+    paddingHorizontal: 30,
+    fontSize: 17,
+    marginTop: 8,
   },
   mealTimesContainer: {
     marginTop: 16,
-   
+
   },
   mealTimeContainer: {
     flexDirection: 'row',

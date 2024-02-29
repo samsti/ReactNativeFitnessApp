@@ -13,6 +13,7 @@ const HomeScreen = () => {
   const [selectedDate, setSelectedDate] = useState(null); // Add selectedDate state
   const navigation = useNavigation();
 
+
   useEffect(() => {
     // Load events for all dates from AsyncStorage on component mount
     loadMarkedDates();
@@ -75,7 +76,7 @@ const HomeScreen = () => {
         <View style={styles.caloriesContainer}>
           <Text style={styles.caloriesText}>Today</Text>
           <Text style={styles.numberCaloriesText}>budget 2500 Cal</Text>
-          <Text style={styles.caloriesNumber}>1157</Text>
+          <Text style={styles.caloriesNumber}>1122</Text>
         </View>
       </View>
       <TrainingsSlider/>

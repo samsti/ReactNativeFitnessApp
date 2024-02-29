@@ -12,13 +12,13 @@ const NavBar = ({  }) => {
       <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('Body')}>
         <Image source={require('../../assets/images/cviky.png')} style={styles.icon}  />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('MealPlan')}>
+      <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('MealPlan',)}>
         <Image source={require('../../assets/images/jidelnicek.png')} style={styles.icon}  />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('Home')}>
+      <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('Home', { totalCalories: totalCalories })}>
         <Image source={require('../../assets/images/logo_main.png')} style={styles.logo} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('Home')}>
+      <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('Home',  { totalCalories: totalCalories })}>
         <Image source={require('../../assets/images/calendar.png')} style={styles.icon}  />
       </TouchableOpacity>
       <TouchableOpacity style={styles.menu} onPress={() => navigation.navigate('User')}>
