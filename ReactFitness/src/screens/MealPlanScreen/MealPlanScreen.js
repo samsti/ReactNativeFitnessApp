@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, } from 'react-native';
 import NutritionDataFetcher from '../../components/NutritionDataFetcher'; // Import the NutritionDataFetcher component
 import NavBar from '../../components/navBar/navBar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CheckBox from 'react-native-check-box'
 
 const MealPlanScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [selectedFood, setSelectedFood] = useState(null);
   const [nutritionInfo, setNutritionInfo] = useState(null);
-  const [fetchData, setFetchData] = useState(false); // State to control fetching data
+  const [fetchData, setFetchData] = useState(false);
   const [assignedFoods, setAssignedFoods] = useState({
     BREAKFAST: [],
     SNACK1: [],
@@ -16,20 +18,37 @@ const MealPlanScreen = () => {
     SNACK2: [],
     DINNER: [],
   });
-  const [selectedMealTime, setSelectedMealTime] = useState(null); // State to track selected meal time
-  const [totalCalories, setTotalCalories] = useState(0); // State to store total calories
+  const [selectedMealTime, setSelectedMealTime] = useState(null);
+  const [totalCalories, setTotalCalories] = useState(0);
   const [weight, setWeight] = useState('');
 
   useEffect(() => {
-    // Calculate total calories when assignedFoods changes
+    // Load assigned foods and total calories from AsyncStorage when component mounts
+    AsyncStorage.multiGet(['assignedFoods', 'totalCalories']).then((data) => {
+      const assignedFoodsData = data[0][1];
+      const totalCaloriesData = data[1][1];
+  
+      if (assignedFoodsData) {
+        setAssignedFoods(JSON.parse(assignedFoodsData));
+      }
+      if (totalCaloriesData) {
+        setTotalCalories(parseInt(totalCaloriesData));
+      }
+    });
+  }, []);
+  
+  useEffect(() => {
+    // Recalculate total calories whenever assignedFoods change
     let total = 0;
     Object.values(assignedFoods).forEach((mealFoods) => {
       mealFoods.forEach((food) => {
-        total += parseInt(food.nutritionInfo.calories);
+        total += food.nutritionInfo.calories;
       });
     });
     setTotalCalories(total);
   }, [assignedFoods]);
+  
+  // Rest of your component code remains the same...
 
   const handleSearch = () => {
     setFetchData(true); // Set fetchData state to true to trigger fetching
@@ -81,6 +100,18 @@ const MealPlanScreen = () => {
     setSelectedMealTime(mealTime === selectedMealTime ? null : mealTime);
   };
 
+  const handleDeleteFood = (mealTime, index) => {
+    // Create a copy of the assignedFoods object
+    const updatedAssignedFoods = { ...assignedFoods };
+  
+    // Remove the food item at the specified index from the assignedFoods array for the given mealTime
+    updatedAssignedFoods[mealTime].splice(index, 1);
+  
+    // Update the state with the updated assignedFoods object
+    setAssignedFoods(updatedAssignedFoods);
+  };
+  
+
   return (
     <>
       <NavBar />
@@ -89,6 +120,7 @@ const MealPlanScreen = () => {
           <TextInput
             style={styles.input}
             placeholder="Search food"
+            placeholderTextColor="#FF5E00"
             value={searchQuery}
             onChangeText={setSearchQuery} // Update searchQuery state on every text change
           />
@@ -97,10 +129,16 @@ const MealPlanScreen = () => {
             value={weight}
             onChangeText={setWeight}
             placeholder="weight(g)"
+            placeholderTextColor="#FF5E00"
           />
-          <TouchableOpacity onPress={handleSearch}>
-            <Text style={styles.searchButton}>SEARCH</Text>
+          <View style={styles.imgContainer}>
+              <TouchableOpacity onPress={handleSearch}>
+            <Image
+              source={require('../../assets/images/search.png')} // Adjust the path to your custom icon
+              style={styles.searchIcon}
+            />
           </TouchableOpacity>
+      </View>
         </View>
 
         {/* Fetch data from Nutrition API based on search query only when fetchData is true */}
@@ -130,38 +168,55 @@ const MealPlanScreen = () => {
           {Object.keys(assignedFoods).map((mealTime) => (
             <View key={mealTime}>
               <View style={styles.mealTimeContainer}>
-                <TouchableOpacity onPress={() => handleMealTimeSelection(mealTime)} style={styles.mealTimeButton}>
-                  <Text style={styles.mealTimeText}>{mealTime}</Text>
-                </TouchableOpacity>
+                <View style={styles.onlyMealTime}>
+                    <TouchableOpacity onPress={() => handleMealTimeSelection(mealTime)} style={styles.mealTimeButton}>
+                      <Text style={styles.mealTimeText}>{mealTime}</Text>
+                    </TouchableOpacity>
+                </View>
                 {/* Move the addButton inside the mealTimeContainer */}
                 <TouchableOpacity onPress={() => handleAddToMealPlan(mealTime)} style={styles.addButton}>
                   <Text style={styles.addButtonLabel}>add</Text>
                 </TouchableOpacity>
               </View>
               {/* Place the assignedFoodsContainer below the mealTimeContainer */}
+              
               {selectedMealTime === mealTime && (
-                <View style={styles.assignedFoodsContainer}>
-                  <View style={styles.assignedFoodsRow}>
-                    <Text style={styles.assignedFoodsHeader}>Food</Text>
-                    <Text style={styles.assignedFoodsHeader}>Calories</Text>
-                    <Text style={styles.assignedFoodsHeader}>Protein</Text>
-                    <Text style={styles.assignedFoodsHeader}>Fat</Text>
-                    <Text style={styles.assignedFoodsHeader}>Carbs</Text>
-                  </View>
-                  {assignedFoods[mealTime].map((food, index) => (
-                    <View key={index} style={styles.assignedFoodsRow}>
-                      <Text>{food.name}</Text>
-                      <Text>{food.nutritionInfo.calories}</Text>
-                      <Text>{food.nutritionInfo.protein_g}g</Text>
-                      <Text>{food.nutritionInfo.fat_total_g}g</Text>
-                      <Text>{food.nutritionInfo.carbohydrates_total_g}g</Text>
+                <View>
+                  <View style={styles.assignedFoodsContainer}>
+                    <View style={styles.assignedFoodsRow}>
+                      <Text style={styles.assignedFoodsHeader}>Food</Text>
+                      <Text style={styles.assignedFoodsHeader}>Calories</Text>
+                      <Text style={styles.assignedFoodsHeader}>Protein</Text>
+                      <Text style={styles.assignedFoodsHeader}>Fat</Text>
+                      <Text style={styles.assignedFoodsHeader}>Carbs</Text>
+                      <Text style={styles.assignedFoodsHeader}>          </Text>
                     </View>
-                  ))}
+                    {assignedFoods[mealTime].map((food, index) => (
+                     <View key={index} style={styles.assignedFoodsRow}>
+                     <Text style={styles.assignedFoodsText}>{food.name}</Text>
+                     <Text style={styles.assignedFoodsText}>{food.nutritionInfo.calories}</Text>
+                     <Text style={styles.assignedFoodsText}>{food.nutritionInfo.protein_g}g</Text>
+                     <Text style={styles.assignedFoodsText}>{food.nutritionInfo.fat_total_g}g</Text>
+                     <Text style={styles.assignedFoodsText}>{food.nutritionInfo.carbohydrates_total_g}g</Text>
+                     <View style={styles.deleteCon}>
+                      <TouchableOpacity onPress={() => handleDeleteFood(mealTime, index)}>
+                        <Image
+                          source={require('../../assets/images/trash_orange.png')} // Adjust the path to your custom icon
+                          style={styles.trashIcon}
+                        />
+                      </TouchableOpacity>
+                     </View>
+                   </View>
+                    ))}
+               
+                  </View>
                 </View>
               )}
             </View>
           ))}
         </View>
+
+     
 
 
         {/* Display total calories */}
@@ -188,39 +243,71 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+    backgroundColor: '#484847',
   },
   searchContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 16,
+    
+  },
+  deleteCon: {
+    marginTop: -5,
+      height: 35,
+      width: 35,
+      borderRadius: 4,
+  },
+
+  onlyMealTime: {
+    backgroundColor: '#ffff',
+    borderRadius: 4,
   },
   input: {
     flex: 1,
     height: 40,
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
+    borderColor: '#ffff',
+    backgroundColor: '#ffff',
+    borderRadius: 4,
     paddingHorizontal: 16,
+    fontFamily: "Rajdhani-Medium",
+    fontSize: 17,
+    color: "#FF5E00",
   },
 
   weightInput: {
     width: 100,
     height: 40,
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
+    borderColor: '#ffff',
+    backgroundColor: '#ffff',
+    borderRadius: 4,
     paddingHorizontal: 16,
     marginLeft: 10,
+    fontFamily: "Rajdhani-Medium",
+    fontSize: 17,
+    color: "#FF5E00",
   },
 
-  searchButton: {
-    marginLeft: 8,
-    padding: 10,
-    backgroundColor: "#FF5E00",
-    borderRadius: 8,
-    color: 'white',
+  searchIcon: {
+    width: 25, // Adjust the width of the background
+    height: 30, // Adjust the height of the background
+    justifyContent: 'center', // Align icon vertically in the center
+    alignItems: 'center', // Align icon horizontally in the center
   },
+  imgContainer: {
+    height: 40,
+    width: 50,
+    backgroundColor: "red",
+    display: "flex", // Add display flex to enable alignment
+    justifyContent: "center", // Center horizontally
+    alignItems: "center", // Center vertically
+    borderRadius: 4,
+    backgroundColor: "black",
+    marginLeft: 9,
+  },
+  
   selectedFoodContainer: {
     marginTop: 16,
   },
@@ -231,94 +318,114 @@ const styles = StyleSheet.create({
   },
   addButton: {
     backgroundColor: "#FF5E00",
-    borderRadius: 8,
+    borderRadius: 4,
     padding: 12,
     alignItems: 'center',
-    marginBottom: 8,
     marginLeft: 10,
   },
   addButtonLabel: {
     color: '#fff',
-    fontWeight: 'bold',
-  },
-  infoButton: {
-    backgroundColor: 'green',
-    borderRadius: 8,
-    padding: 12,
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  infoButtonLabel: {
-    color: '#fff',
-    fontWeight: 'bold',
+    fontFamily: "Rajdhani-Bold",
   },
   nutritionContainer: {
     marginTop: 16,
+    backgroundColor: '#ffff',
+    borderRadius: 4,
   },
   nutritionRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginBottom: 8,
+    fontFamily: "Rajdhani-Bold",
+   
   },
   nutritionInfo: {
     textAlign: 'center',
+    fontFamily: "Rajdhani-Bold",
   },
   nutritionHeader: {
-    fontWeight: 'bold',
+    fontFamily: "Rajdhani-Bold",
+   
   },
   mealTimesContainer: {
     marginTop: 16,
+   
   },
   mealTimeContainer: {
     flexDirection: 'row',
-    alignItems: 'center', // Align items center
+    alignItems: 'center',
+    borderRadius: 16, // Optionally add borderRadius to round the corners
+    marginBottom: 15,
   },
   mealTimeButton: {
     padding: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
+    borderRadius: 4,
   },
   mealTimeText: {
-    textAlign: 'center',
-    width: 310,
+    textAlign: 'left',
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#FF5E00',
+    width: 317,
+    fontFamily: "Rajdhani-Bold",
+    fontSize: 18,
+    color: "#FF5E00",
   },
   assignedFoodsContainer: {
     padding: 8,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    width: 330,
+    marginTop: -23,
+    borderRadius: 4,
+    width: 337,
+    backgroundColor: '#ffff',
+    marginBottom: 15,
   },
   assignedFoodsRow: {
+    fontFamily: "Rajdhani-Bold",
     flexDirection: 'row',
     justifyContent: 'space-between', // Change to 'space-between' to evenly distribute items
     marginBottom: 15,
     paddingHorizontal: 10, // Add paddingHorizontal to provide space on the sides
   },
   assignedFoodsHeader: {
-    fontWeight: 'bold',
-    textAlign: 'center', // Center headings
+    fontFamily: "Rajdhani-Regular",
+    textAlign: 'left', // Center headings
+    fontSize: 17,
+    marginBottom: -5,
+    marginLeft: -5,
+  },
+  assignedFoodsText: {
+    flex: 1, // Ensure text takes remaining space
+    fontFamily: "Rajdhani-Bold",
+    fontSize: 15,
+    textAlign: 'left', 
+    paddingHorizontal: 1,
+  },
+  trashIcon: {
+    width: 23,
+    height: 25,
+    marginLeft: 6, // Align icon to the right
+    marginRight: 0, // Padding from the right
+    marginTop: 4,
+
   },
   resultItem: {
     padding: 16,
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 8,
+    borderRadius: 4,
     marginBottom: 8,
   },
   resultItemText: {
     fontSize: 16,
     textAlign: 'center',
-    color: "red",
   },
   totalCaloriesContainer: {
     marginTop: 16,
     alignItems: 'center',
   },
   totalCaloriesLabel: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontFamily: "Rajdhani-SemiBold",
+    color: "#E6E5C6"
   },
 });
 

@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     verticalAlign: "center",
     backgroundColor: 'black',
     width: '100%',
-    height: '10%',
+    minHeight: '10%',
   },
   title: {
     fontSize: 20,

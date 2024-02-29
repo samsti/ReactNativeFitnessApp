@@ -33,6 +33,7 @@
     "react-native": "0.72.7",
     "react-native-asset": "^2.1.1",
     "react-native-calendars": "^1.1303.0",
+    "react-native-check-box": "^2.1.7",
     "react-native-date-picker": "^4.3.6",
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.14.1",
