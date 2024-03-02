@@ -3,7 +3,6 @@ import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, }
 import NutritionDataFetcher from '../../components/NutritionDataFetcher'; // Import the NutritionDataFetcher component
 import NavBar from '../../components/navBar/navBar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CheckBox from 'react-native-check-box'
 
 const MealPlanScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -22,23 +21,29 @@ const MealPlanScreen = () => {
   const [totalCalories, setTotalCalories] = useState(0);
   const [weight, setWeight] = useState('');
 
+  // Load assigned foods and total calories from AsyncStorage when component mounts
   useEffect(() => {
-    // Load assigned foods and total calories from AsyncStorage when component mounts
-    AsyncStorage.multiGet(['assignedFoods', 'totalCalories']).then((data) => {
-      const assignedFoodsData = data[0][1];
-      const totalCaloriesData = data[1][1];
+    const loadData = async () => {
+      try {
+        const assignedFoodsData = await AsyncStorage.getItem('assignedFoods');
+        const totalCaloriesData = await AsyncStorage.getItem('totalCalories');
   
-      if (assignedFoodsData) {
-        setAssignedFoods(JSON.parse(assignedFoodsData));
+        if (assignedFoodsData) {
+          setAssignedFoods(JSON.parse(assignedFoodsData));
+        }
+        if (totalCaloriesData) {
+          setTotalCalories(parseInt(totalCaloriesData));
+        }
+      } catch (error) {
+        console.error('Error loading data:', error);
       }
-      if (totalCaloriesData) {
-        setTotalCalories(parseInt(totalCaloriesData));
-      }
-    });
+    };
+
+    loadData();
   }, []);
-  
+
+  // Recalculate total calories whenever assignedFoods change
   useEffect(() => {
-    // Recalculate total calories whenever assignedFoods change
     let total = 0;
     Object.values(assignedFoods).forEach((mealFoods) => {
       mealFoods.forEach((food) => {
@@ -47,11 +52,27 @@ const MealPlanScreen = () => {
     });
     setTotalCalories(total);
   }, [assignedFoods]);
+
+  // Save data whenever there is a change in the state that needs to be persisted
+  useEffect(() => {
+    saveData();
+  }, [assignedFoods, totalCalories]);
+
+  const saveData = async () => {
+    try {
+      await AsyncStorage.setItem('assignedFoods', JSON.stringify(assignedFoods));
+      await AsyncStorage.setItem('totalCalories', totalCalories.toString());
+    } catch (error) {
+      console.error('Error saving data:', error);
+    }
+  };
   
   // Rest of your component code remains the same...
 
   const handleSearch = () => {
     setFetchData(true); // Set fetchData state to true to trigger fetching
+
+    saveData();
   };
 
   const handleFetchComplete = (data) => {
@@ -77,6 +98,7 @@ const MealPlanScreen = () => {
           carbohydrates_total_g: nutritionInfo.carbohydrates_total_g,
           weight: weight // Add weight to nutritionInfo
         }
+
       };
 
       // Add the selected food to the corresponding meal time array
@@ -130,6 +152,7 @@ const MealPlanScreen = () => {
             onChangeText={setWeight}
             placeholder="weight(g)"
             placeholderTextColor="#FF5E00"
+            keyboardType="numeric"
           />
           <View style={styles.imgContainer}>
               <TouchableOpacity onPress={handleSearch}>

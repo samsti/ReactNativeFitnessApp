@@ -3,16 +3,67 @@ import React, { useState, useEffect } from 'react';
 import { View, Image, Text, Alert, StyleSheet, ScrollView } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
 import TrainingsSlider from '../../components/TrainingsSlider';
 import NavBar from '../../components/navBar/navBar';
+import firestore from '@react-native-firebase/firestore';
 
+ 
 const HomeScreen = () => {
   const [markedDates, setMarkedDates] = useState({});
   const [totalEvents, setTotalEvents] = useState(0);
   const [selectedDate, setSelectedDate] = useState(null); // Add selectedDate state
-  const navigation = useNavigation();
+  const [totalCalories, setTotalCalories] = useState(0);
+  const [userData, setUserData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Add isLoading state
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // Retrieve the username from AsyncStorage
+        const username = await AsyncStorage.getItem('username');
+    
+        // Retrieve the user with the provided username from Firestore
+        const userSnapshot = await firestore().collection('user').where('username', '==', username).get();
+    
+        if (!userSnapshot.empty) {
+          // Assuming there's only one user with the provided username
+          const userData = userSnapshot.docs[0].data();
+          // Include the document ID in the user data
+          userData.uid = userSnapshot.docs[0].id;
+          setUserData(userData);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+
+
+  useEffect(() => {
+    // Load total calories from AsyncStorage when component mounts
+    const fetchTotalCalories = async () => {
+      try {
+        const totalCaloriesData = await AsyncStorage.getItem('totalCalories');
+        if (totalCaloriesData !== null) {
+          setTotalCalories(parseInt(totalCaloriesData));
+        } else {
+          console.log('Total calories data not found in AsyncStorage');
+        }
+      } catch (error) {
+        console.error('Error retrieving total calories:', error);
+      }
+    };
+
+    fetchTotalCalories();
+
+    // You can also set up event listeners or any other initialization code here
+  }, []);
+
+  
+ 
 
   useEffect(() => {
     // Load events for all dates from AsyncStorage on component mount
@@ -75,8 +126,9 @@ const HomeScreen = () => {
         </View>
         <View style={styles.caloriesContainer}>
           <Text style={styles.caloriesText}>Today</Text>
-          <Text style={styles.numberCaloriesText}>budget 2500 Cal</Text>
-          <Text style={styles.caloriesNumber}>1122</Text>
+          <Text style={styles.numberCaloriesText}>Budget {userData && userData.kcalPerDay ? userData.kcalPerDay.toString() + ' Cal' : ""}</Text>
+          <Text style={styles.numberCaloriesText}>Current Kcal:</Text>
+          <Text style={styles.caloriesNumber}>{totalCalories}</Text>  
         </View>
       </View>
       <TrainingsSlider/>

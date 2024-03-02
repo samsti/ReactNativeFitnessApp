@@ -76,6 +76,7 @@ const UserScreen = () => {
             style={styles.input}
             value={modifiedUserData ? modifiedUserData.age : ""}
             onChangeText={(text) => handleInputChange('age', text)}
+            keyboardType="numeric"
           />
         </View>
 
@@ -85,6 +86,7 @@ const UserScreen = () => {
             style={styles.input}
             value={modifiedUserData ? modifiedUserData.height : ""}
             onChangeText={(text) => handleInputChange('height', text)}
+            keyboardType="numeric"
           />
         </View>
 
@@ -94,6 +96,7 @@ const UserScreen = () => {
             style={styles.input}
             value={modifiedUserData ? modifiedUserData.weight : ""}
             onChangeText={(text) => handleInputChange('weight', text)}
+            keyboardType="numeric"
           />
         </View>
 
@@ -103,6 +106,7 @@ const UserScreen = () => {
             style={styles.input}
             value={modifiedUserData ? modifiedUserData.kcalPerDay : ""}
             onChangeText={(text) => handleInputChange('kcalPerDay', text)}
+            keyboardType="numeric"
           />
         </View>
 
