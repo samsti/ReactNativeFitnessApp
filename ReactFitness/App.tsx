@@ -16,15 +16,12 @@ import Navigation from './src/navigation';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-  },
-});
+import { Provider } from 'react-redux';
+import store from './src/redux/store'; // Import your Redux store
 
 
 const App = () => {
+
   
 
   let RNfirebaseConfig = {
@@ -46,9 +43,11 @@ const App = () => {
 
 
   return (
-  <SafeAreaView style={styles.root}>
-    <Navigation />
-  </SafeAreaView>
+    <Provider store={store}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <Navigation />
+      </SafeAreaView>
+    </Provider>
 
   );
 };

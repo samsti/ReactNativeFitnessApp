@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image, } from 'react-native';
-import NutritionDataFetcher from '../../components/NutritionDataFetcher'; // Import the NutritionDataFetcher component
-import NavBar from '../../components/navBar/navBar';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector, useDispatch } from 'react-redux'; // Importing useSelector and useDispatch
+import { updateTotalCalories } from '../../redux/actions'; // Assuming the path to your actions file is correct
+import NavBar from '../../components/navBar/navBar';
+import NutritionDataFetcher from '../../components/NutritionDataFetcher';
 
 const MealPlanScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -18,22 +20,26 @@ const MealPlanScreen = () => {
     DINNER: [],
   });
   const [selectedMealTime, setSelectedMealTime] = useState(null);
-  const [totalCalories, setTotalCalories] = useState(0);
+  // Remove totalCalories state
+  // const [totalCalories, setTotalCalories] = useState(0);
   const [weight, setWeight] = useState('');
 
-  // Load assigned foods and total calories from AsyncStorage when component mounts
+  const dispatch = useDispatch(); // Initializing useDispatch hook
+
+  // Load assigned foods and total calories from Redux store when component mounts
   useEffect(() => {
     const loadData = async () => {
       try {
         const assignedFoodsData = await AsyncStorage.getItem('assignedFoods');
         const totalCaloriesData = await AsyncStorage.getItem('totalCalories');
-  
+
         if (assignedFoodsData) {
           setAssignedFoods(JSON.parse(assignedFoodsData));
         }
-        if (totalCaloriesData) {
-          setTotalCalories(parseInt(totalCaloriesData));
-        }
+        // Remove setting totalCalories from AsyncStorage
+        // if (totalCaloriesData) {
+        //   setTotalCalories(parseInt(totalCaloriesData));
+        // }
       } catch (error) {
         console.error('Error loading data:', error);
       }
@@ -50,22 +56,26 @@ const MealPlanScreen = () => {
         total += food.nutritionInfo.calories;
       });
     });
-    setTotalCalories(total);
-  }, [assignedFoods]);
-
-  // Save data whenever there is a change in the state that needs to be persisted
-  useEffect(() => {
-    saveData();
-  }, [assignedFoods, totalCalories]);
+  
+    // Ensure totalCalories is an integer (no decimal places)
+    total = parseInt(total);
+  
+    // Update Redux store with totalCalories
+    dispatch(updateTotalCalories(total));
+  }, [assignedFoods, dispatch]);
 
   const saveData = async () => {
     try {
       await AsyncStorage.setItem('assignedFoods', JSON.stringify(assignedFoods));
+      // Store totalCalories in AsyncStorage
       await AsyncStorage.setItem('totalCalories', totalCalories.toString());
     } catch (error) {
       console.error('Error saving data:', error);
     }
   };
+
+  // Use useSelector to get totalCalories from Redux store
+  const totalCalories = useSelector(state => state.totalCalories);
   
   // Rest of your component code remains the same...
 

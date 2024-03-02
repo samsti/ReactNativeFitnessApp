@@ -7,17 +7,22 @@ import TrainingsSlider from '../../components/TrainingsSlider';
 import NavBar from '../../components/navBar/navBar';
 import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateTotalCalories } from '../../redux/actions'; // Import the action to update total calories
+
 
  
 const HomeScreen = () => {
-  const [markedDates, setMarkedDates] = useState({});
   const [totalEvents, setTotalEvents] = useState(0);
   const [selectedDate, setSelectedDate] = useState(null); // Add selectedDate state
-  const [totalCalories, setTotalCalories] = useState(0);
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // Add isLoading state
 
+  const totalCalories = useSelector(state => state.totalCalories); // Retrieve totalCalories from Redux store
+  const dispatch = useDispatch();
+
   const navigation = useNavigation();
+
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -44,14 +49,13 @@ const HomeScreen = () => {
   }, []);
 
 
-
-  useEffect(() => {
-    // Load total calories from AsyncStorage when component mounts
+   useEffect(() => {
     const fetchTotalCalories = async () => {
       try {
         const totalCaloriesData = await AsyncStorage.getItem('totalCalories');
         if (totalCaloriesData !== null) {
-          setTotalCalories(parseInt(totalCaloriesData));
+          // Dispatch action to update totalCalories in Redux store
+          dispatch(updateTotalCalories(parseInt(totalCaloriesData)));
         } else {
           console.log('Total calories data not found in AsyncStorage');
         }
@@ -61,9 +65,7 @@ const HomeScreen = () => {
     };
 
     fetchTotalCalories();
-
-    // You can also set up event listeners or any other initialization code here
-  }, []);
+  }, [dispatch]); // Add dispatch to dependency array
 
   
  
@@ -119,8 +121,7 @@ const HomeScreen = () => {
           firstDay={1}
           horizontal={true}
           onDayPress={onDayPress}
-          markedDates={markedDates}
-        />
+         />
       </View>
       <View style={styles.inlineContainer}>
         <View style={styles.workoutCounterContainer}>
