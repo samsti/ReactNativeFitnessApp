@@ -73,8 +73,7 @@ const styles = StyleSheet.create({
     width: 380,
     height: 150,
     borderRadius: 15,
-    marginLeft: 15,
-    marginRight: 15,
+
     marginTop: 5,
     position: 'relative', // Ensure the overlayText respects the position relative to this container
   },

@@ -5,6 +5,7 @@ import { Calendar } from 'react-native-calendars';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TrainingsSlider from '../../components/TrainingsSlider';
 import NavBar from '../../components/navBar/navBar';
+import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 
  
@@ -15,6 +16,8 @@ const HomeScreen = () => {
   const [totalCalories, setTotalCalories] = useState(0);
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // Add isLoading state
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -121,7 +124,7 @@ const HomeScreen = () => {
       </View>
       <View style={styles.inlineContainer}>
         <View style={styles.workoutCounterContainer}>
-          <Text style={styles.workoutCounterText}>workout</Text>
+          <Text style={styles.workoutCounterText}>workouts</Text>
           <Text style={styles.workoutCounterNumber}>{totalEvents}</Text>
         </View>
         <View style={styles.caloriesContainer}>
@@ -131,7 +134,9 @@ const HomeScreen = () => {
           <Text style={styles.caloriesNumber}>{totalCalories}</Text>  
         </View>
       </View>
+      <View style={styles.sliderContainer}>
       <TrainingsSlider/>
+      </View>
     </View>
   );
 };
@@ -141,6 +146,11 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'grey',
     height: '100%',
+  },
+  sliderContainer: {
+    flex: 1,
+    justifyContent: 'center', 
+    alignItems: 'center', 
   },
   logo: {
     width: 90,

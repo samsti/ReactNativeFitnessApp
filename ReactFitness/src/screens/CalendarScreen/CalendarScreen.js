@@ -185,6 +185,7 @@ const CalendarScreen = () => {
             <TextInput
               style={styles.input}
               placeholder="event"
+              placeholderTextColor="#FF5E00"
               value={newEventText}
               onChangeText={(text) => setNewEventText(text)}
             />
@@ -193,6 +194,7 @@ const CalendarScreen = () => {
             <TextInput
               style={styles.input}
               placeholder="time"
+              placeholderTextColor="#FF5E00"
               value={newEventTime}
               onChangeText={handleTimeChange} // Updated to call handleTimeChange
               keyboardType='numeric'
@@ -260,7 +262,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 8,
     paddingLeft: 8,
-    color: 'white',
+    color: '#FF5E00',
     fontFamily: "Rajdhani-Medium",
   },
   addButton: {
