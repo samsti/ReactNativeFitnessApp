@@ -111,6 +111,7 @@ const RegisterScreen = () => {
         secureTextEntry={false}
         imageSource={iconImage !== '' ? { uri: iconImage } : ageIcon}
         type="REGISTER2" 
+        keyboardType="numeric"
         />
          <Input 
         placeholder="Weight"  
@@ -119,6 +120,7 @@ const RegisterScreen = () => {
         secureTextEntry={false}
         imageSource={iconImage !== '' ? { uri: iconImage } : weightIcon}
         type="REGISTER2" 
+        keyboardType="numeric"
         />
         <Input 
         placeholder="Height"  
@@ -127,6 +129,7 @@ const RegisterScreen = () => {
         secureTextEntry={false}
         imageSource={iconImage !== '' ? { uri: iconImage } : heightIcon}
         type="REGISTER2" 
+        keyboardType="numeric"
         />
 
 
