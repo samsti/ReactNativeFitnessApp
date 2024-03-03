@@ -1,8 +1,11 @@
+// CalendarScreen.js
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, StyleSheet, Alert, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import NavBar from '../../components/navBar/navBar';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateTotalEvents } from '../../redux/actions';
 
 const CalendarScreen = () => {
   const [events, setEvents] = useState([]);
@@ -13,8 +16,28 @@ const CalendarScreen = () => {
   const route = useRoute();
   const selectedDate = route.params?.selectedDate || null;
 
+  const dispatch = useDispatch();
+  const totalEvents = useSelector(state => state.totalEvents);
+
+  const getFormattedDate = (date) => {
+    const selectedDate = new Date(date);
+    const day = selectedDate.getDate();
+    const month = selectedDate.getMonth() + 1;
+    return `${day}.${month}`;
+  };
+
+  const getDayName = (date) => {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const selectedDate = new Date(date);
+    const dayIndex = selectedDate.getDay();
+    return days[dayIndex];
+  };
+
+  const handleTimeChange = (time) => {
+    setNewEventTime(time);
+  };
+
   useEffect(() => {
-    // Load events for the selected date from AsyncStorage on component mount
     if (selectedDate) {
       loadEvents(selectedDate);
     }
@@ -26,12 +49,12 @@ const CalendarScreen = () => {
       const allEvents = storedEvents ? JSON.parse(storedEvents) : {};
       const selectedDateEvents = allEvents[date] || [];
       setEvents(selectedDateEvents);
-      updateMarkedDates(setMarkedDates, date, selectedDateEvents);
+      updateMarkedDates(date, selectedDateEvents);
     } catch (error) {
       console.error('Error loading events:', error);
     }
   };
-
+  
   const renderItem = ({ item }) => {
     return (
       <View style={styles.item}>
@@ -57,44 +80,39 @@ const CalendarScreen = () => {
   };
   
 
+ 
   const handleDeleteEvent = async (eventId) => {
     const updatedEvents = events.filter((event) => event.id !== eventId);
     setEvents(updatedEvents);
     storeEvents(updatedEvents, selectedDate);
-
-    // Update marked dates to remove the dot for the deleted event
-    updateMarkedDates(setMarkedDates, selectedDate, updatedEvents);
-
-    // Check if the day has no events left, then update marked dates to mark the day as false
-    if (updatedEvents.length === 0) {
-      const updatedMarkedDates = { ...markedDates };
-      updatedMarkedDates[selectedDate] = { marked: false };
-      setMarkedDates(updatedMarkedDates);
-    }
+    updateMarkedDates(selectedDate, updatedEvents); // Update marked dates
+    dispatch(updateTotalEvents(updatedEvents.length)); // Update totalEvents count
   };
-
+  
   const handleAddEvent = async () => {
     if (!newEventText || !newEventTime || !selectedDate) {
       Alert.alert('Incomplete Event', 'Please enter event details and select a date before adding.');
       return;
     }
-
+  
     const newEvent = {
       id: Date.now().toString(),
       text: newEventText,
       time: newEventTime,
     };
-
+  
     const updatedEvents = [...events, newEvent];
     setEvents(updatedEvents);
     storeEvents(updatedEvents, selectedDate);
-
-    // Update marked dates to include the dot for the newly added event
-    updateMarkedDates(setMarkedDates, selectedDate, updatedEvents);
-
+    updateMarkedDates(selectedDate, updatedEvents); // Update marked dates
+    dispatch(updateTotalEvents(updatedEvents.length)); // Update totalEvents count
+  
     setNewEventText('');
     setNewEventTime('');
   };
+  
+  
+  
 
   const storeEvents = async (events, date) => {
     try {
@@ -107,58 +125,27 @@ const CalendarScreen = () => {
     }
   };
 
-  const updateMarkedDates = async (setMarkedDates, date, updatedEvents) => {
-    try {
-      const storedEvents = await AsyncStorage.getItem('events');
-      const allEvents = storedEvents ? JSON.parse(storedEvents) : {};
+// Inside the updateMarkedDates function in CalendarScreen component
+const updateMarkedDates = (date, updatedEvents) => {
+  console.log('Updated events:', updatedEvents);
 
-      // Update marked dates to include the dot for the date with events
-      const markedDates = { ...allEvents[date] };
-      markedDates[date] = { marked: updatedEvents.length > 0, dotColor: '#FF5E00' };
+  const updatedMarkedDates = { ...markedDates };
 
-      setMarkedDates(markedDates);
-    } catch (error) {
-      console.error('Error updating marked dates:', error);
-    }
-  };
+  // Check if there are events for the given date
+  if (updatedEvents.length > 0) {
+    updatedMarkedDates[date] = { marked: true, dotColor: '#FF5E00' };
+  } else {
+    // If no events, remove the mark for this date
+    delete updatedMarkedDates[date];
+  }
 
-  const removeDayFromAsyncStorage = async (date) => {
-    try {
-      const storedEvents = await AsyncStorage.getItem('events');
-      const allEvents = storedEvents ? JSON.parse(storedEvents) : {};
+  console.log('Updated marked dates:', updatedMarkedDates);
 
-      // Remove the day from AsyncStorage
-      delete allEvents[date];
+  setMarkedDates(updatedMarkedDates);
+};
 
-      await AsyncStorage.setItem('events', JSON.stringify(allEvents));
-    } catch (error) {
-      console.error('Error removing day from AsyncStorage:', error);
-    }
-  };
 
-  // Function to get day and month in the format "9.2"
-  const getFormattedDate = (date) => {
-    const selectedDate = new Date(date);
-    const day = selectedDate.getDate();
-    const month = selectedDate.getMonth() + 1; // Months are zero-indexed
-    return `${day}.${month}`;
-  };
-
-  // Function to get the name of the day
-  const getDayName = (date) => {
-    const days = ['(sunday)', '(monday)', '(tuesday)', '(wednesday)', '(thursday)', '(friday)', '(saturday)'];
-    const selectedDate = new Date(date);
-    const dayIndex = selectedDate.getDay();
-    return days[dayIndex];
-  };
-
-  const handleTimeChange = (time) => {
-    // Format the time input to include ":" after two numbers
-    if (time.length === 2 && !time.includes(':')) {
-      time += ':';
-    }
-    setNewEventTime(time);
-  };
+  
 
   return (
     <>
@@ -185,7 +172,7 @@ const CalendarScreen = () => {
             <TextInput
               style={styles.input}
               placeholder="event"
-              placeholderTextColor=""
+              placeholderTextColor="#FF5E00"
               value={newEventText}
               onChangeText={(text) => setNewEventText(text)}
             />
@@ -194,6 +181,7 @@ const CalendarScreen = () => {
             <TextInput
               style={styles.input}
               placeholder="time"
+              placeholderTextColor="#FF5E00"
               value={newEventTime}
               onChangeText={handleTimeChange} // Updated to call handleTimeChange
               keyboardType='numeric'

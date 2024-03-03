@@ -8,17 +8,19 @@ import NavBar from '../../components/navBar/navBar';
 import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateTotalCalories } from '../../redux/actions'; // Import the action to update total calories
+import { updateTotalCalories, updateTotalEvents } from '../../redux/actions'; // Import the action to update total calories
 
 
  
 const HomeScreen = () => {
-  const [totalEvents, setTotalEvents] = useState(0);
   const [selectedDate, setSelectedDate] = useState(null); // Add selectedDate state
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // Add isLoading state
+  const [markedDates, setMarkedDates] = useState({});
+
 
   const totalCalories = useSelector(state => state.totalCalories); // Retrieve totalCalories from Redux store
+  const totalEvents = useSelector(state => state.totalEvents);
   const dispatch = useDispatch();
 
   const navigation = useNavigation();
@@ -67,60 +69,56 @@ const HomeScreen = () => {
     fetchTotalCalories();
   }, [dispatch]); // Add dispatch to dependency array
 
-  
- 
-
   useEffect(() => {
     // Load events for all dates from AsyncStorage on component mount
     loadMarkedDates();
   }, []);
-
+  
   const loadMarkedDates = async () => {
     try {
       const storedEvents = await AsyncStorage.getItem('events');
       const allEvents = storedEvents ? JSON.parse(storedEvents) : {};
-      updateMarkedDates(allEvents);
+  
+      const updatedMarkedDates = {};
+  
+      // Iterate through allEvents to mark dates with events
+      Object.keys(allEvents).forEach((date) => {
+        if (allEvents[date].length > 0) {
+          updatedMarkedDates[date] = { marked: true, dotColor: '#FF5E00' };
+        }
+      });
+  
+      // Update Redux store with totalEvents
+      dispatch(updateTotalEvents(Object.values(allEvents).flat().length));
+  
+      setMarkedDates(updatedMarkedDates);
     } catch (error) {
       console.error('Error loading marked dates:', error);
     }
   };
+  
 
-  const updateMarkedDates = (allEvents) => {
-    try {
-      const updatedMarkedDates = Object.keys(allEvents).reduce((acc, currentDate) => {
-        acc[currentDate] = { marked: true, dotColor: '#FF5E00' };
-        if (allEvents[currentDate].length === 0) {
-          acc[currentDate].marked = false;
-        }
-        return acc;
-      }, {});
-
-      setMarkedDates(updatedMarkedDates);
-
-      // Count total events
-      const totalEventsCount = Object.values(allEvents).flat().length;
-      setTotalEvents(totalEventsCount);
-    } catch (error) {
-      console.error('Error updating marked dates:', error);
-    }
-  };
-
+  
   const onDayPress = (day) => {
     const currentDate = day.dateString;
-    setSelectedDate(currentDate); // Update selectedDate state
     // Navigate to the CalendarScreen with the selected date
     navigation.navigate('Calendar', { selectedDate: currentDate });
+
   };
+
   return (
     <View style={styles.container}>
       <NavBar />
       <View style={styles.calendarContainer}>
+      {console.log('Marked dates:', markedDates)}
+
         <Calendar
           style={styles.calendar}
           theme={styles.customTheme}
           firstDay={1}
           horizontal={true}
           onDayPress={onDayPress}
+          markedDates={markedDates}
          />
       </View>
       <View style={styles.inlineContainer}>
