@@ -8,7 +8,7 @@ import NavBar from '../../components/navBar/navBar';
 import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateTotalCalories, updateTotalEvents } from '../../redux/actions'; // Import the action to update total calories
+import { updateTotalCalories, updateTotalEvents, updateMarkedDates } from '../../redux/actions'; // Import the action to update total calories
 
 
  
@@ -83,19 +83,23 @@ const HomeScreen = () => {
   
       // Iterate through allEvents to mark dates with events
       Object.keys(allEvents).forEach((date) => {
-        if (allEvents[date].length > 0) {
+        // Check if allEvents[date] exists and is an array
+        if (Array.isArray(allEvents[date]) && allEvents[date].length > 0) {
           updatedMarkedDates[date] = { marked: true, dotColor: '#FF5E00' };
         }
       });
   
       // Update Redux store with totalEvents
-      dispatch(updateTotalEvents(Object.values(allEvents).flat().length));
+      const totalEventsCount = Object.values(allEvents).flat().filter(event => Array.isArray(event)).length;
+      dispatch(updateTotalEvents(totalEventsCount));
   
-      setMarkedDates(updatedMarkedDates);
+      // Update Redux store with marked dates
+      dispatch(updateMarkedDates(updatedMarkedDates));
     } catch (error) {
       console.error('Error loading marked dates:', error);
     }
   };
+  
   
 
   

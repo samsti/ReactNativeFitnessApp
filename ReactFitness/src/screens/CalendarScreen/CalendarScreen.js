@@ -86,8 +86,12 @@ const CalendarScreen = () => {
     setEvents(updatedEvents);
     storeEvents(updatedEvents, selectedDate);
     updateMarkedDates(selectedDate, updatedEvents); // Update marked dates
-    dispatch(updateTotalEvents(updatedEvents.length)); // Update totalEvents count
+  
+    // Calculate the total events count based on the current total count and the length of the updated events array
+    const totalEventsCount = totalEvents - 1;
+    dispatch(updateTotalEvents(totalEventsCount)); // Update totalEvents count in Redux
   };
+  
   
   const handleAddEvent = async () => {
     if (!newEventText || !newEventTime || !selectedDate) {
@@ -105,7 +109,10 @@ const CalendarScreen = () => {
     setEvents(updatedEvents);
     storeEvents(updatedEvents, selectedDate);
     updateMarkedDates(selectedDate, updatedEvents); // Update marked dates
-    dispatch(updateTotalEvents(updatedEvents.length)); // Update totalEvents count
+    
+    // Calculate the total events count based on the current total count and the length of the updated events array
+    const totalEventsCount = totalEvents + 1;
+    dispatch(updateTotalEvents(totalEventsCount)); // Update totalEvents count in Redux
   
     setNewEventText('');
     setNewEventTime('');
@@ -141,9 +148,9 @@ const updateMarkedDates = (date, updatedEvents) => {
 
   console.log('Updated marked dates:', updatedMarkedDates);
 
-  setMarkedDates(updatedMarkedDates);
+  dispatch(updateTotalEvents(updatedEvents.length)); // Update total events count in Redux store
+  dispatch(updateMarkedDates(updatedMarkedDates)); // Update marked dates in Redux store
 };
-
 
   
 
