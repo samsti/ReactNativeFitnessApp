@@ -1,44 +1,29 @@
-// HomeScreen.js
 import React, { useState, useEffect } from 'react';
-import { View, Image, Text, Alert, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import TrainingsSlider from '../../components/TrainingsSlider';
-import NavBar from '../../components/navBar/navBar';
-import { useNavigation } from '@react-navigation/native';
-import firestore from '@react-native-firebase/firestore';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateTotalCalories, updateTotalEvents, updateMarkedDates } from '../../redux/actions'; // Import the action to update total calories
+import { updateTotalCalories, updateTotalEvents } from '../../redux/actions';
+import NavBar from '../../components/navBar/navBar';
+import TrainingsSlider from '../../components/TrainingsSlider';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import firestore from '@react-native-firebase/firestore';
 
-
- 
 const HomeScreen = () => {
-  const [selectedDate, setSelectedDate] = useState(null); // Add selectedDate state
   const [userData, setUserData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // Add isLoading state
   const [markedDates, setMarkedDates] = useState({});
-
-
-  const totalCalories = useSelector(state => state.totalCalories); // Retrieve totalCalories from Redux store
+  const totalCalories = useSelector(state => state.totalCalories);
   const totalEvents = useSelector(state => state.totalEvents);
   const dispatch = useDispatch();
-
   const navigation = useNavigation();
-
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // Retrieve the username from AsyncStorage
         const username = await AsyncStorage.getItem('username');
-    
-        // Retrieve the user with the provided username from Firestore
         const userSnapshot = await firestore().collection('user').where('username', '==', username).get();
-    
         if (!userSnapshot.empty) {
-          // Assuming there's only one user with the provided username
           const userData = userSnapshot.docs[0].data();
-          // Include the document ID in the user data
           userData.uid = userSnapshot.docs[0].id;
           setUserData(userData);
         }
@@ -50,13 +35,11 @@ const HomeScreen = () => {
     fetchUserData();
   }, []);
 
-
-   useEffect(() => {
+  useEffect(() => {
     const fetchTotalCalories = async () => {
       try {
         const totalCaloriesData = await AsyncStorage.getItem('totalCalories');
         if (totalCaloriesData !== null) {
-          // Dispatch action to update totalCalories in Redux store
           dispatch(updateTotalCalories(parseInt(totalCaloriesData)));
         } else {
           console.log('Total calories data not found in AsyncStorage');
@@ -67,55 +50,34 @@ const HomeScreen = () => {
     };
 
     fetchTotalCalories();
-  }, [dispatch]); // Add dispatch to dependency array
+  }, [dispatch]);
 
   useEffect(() => {
-    // Load events for all dates from AsyncStorage on component mount
-    loadMarkedDates();
-  }, []);
-  
-  const loadMarkedDates = async () => {
-    try {
-      const storedEvents = await AsyncStorage.getItem('events');
-      const allEvents = storedEvents ? JSON.parse(storedEvents) : {};
-  
-      const updatedMarkedDates = {};
-  
-      // Iterate through allEvents to mark dates with events
-      Object.keys(allEvents).forEach((date) => {
-        // Check if allEvents[date] exists and is an array
-        if (Array.isArray(allEvents[date]) && allEvents[date].length > 0) {
-          updatedMarkedDates[date] = { marked: true, dotColor: '#FF5E00' };
+    const fetchTotalEvents = async () => {
+      try {
+        const totalEventsData = await AsyncStorage.getItem('totalEvents');
+        if (totalEventsData !== null) {
+          dispatch(updateTotalEvents(parseInt(totalEventsData)));
+        } else {
+          console.log('Total events data not found in AsyncStorage');
         }
-      });
-  
-      // Update Redux store with totalEvents
-      const totalEventsCount = Object.values(allEvents).flat().filter(event => Array.isArray(event)).length;
-      dispatch(updateTotalEvents(totalEventsCount));
-  
-      // Update Redux store with marked dates
-      dispatch(updateMarkedDates(updatedMarkedDates));
-    } catch (error) {
-      console.error('Error loading marked dates:', error);
-    }
-  };
-  
-  
+      } catch (error) {
+        console.error('Error retrieving total events:', error);
+      }
+    };
 
-  
+    fetchTotalEvents();
+  }, [dispatch]);
+
   const onDayPress = (day) => {
     const currentDate = day.dateString;
-    // Navigate to the CalendarScreen with the selected date
     navigation.navigate('Calendar', { selectedDate: currentDate });
-
   };
 
   return (
     <View style={styles.container}>
       <NavBar />
       <View style={styles.calendarContainer}>
-      {console.log('Marked dates:', markedDates)}
-
         <Calendar
           style={styles.calendar}
           theme={styles.customTheme}
@@ -123,7 +85,7 @@ const HomeScreen = () => {
           horizontal={true}
           onDayPress={onDayPress}
           markedDates={markedDates}
-         />
+        />
       </View>
       <View style={styles.inlineContainer}>
         <View style={styles.workoutCounterContainer}>
@@ -134,68 +96,25 @@ const HomeScreen = () => {
           <Text style={styles.caloriesText}>Today</Text>
           <Text style={styles.numberCaloriesText}>Budget {userData && userData.kcalPerDay ? userData.kcalPerDay.toString() + ' Cal' : ""}</Text>
           <Text style={styles.numberCaloriesText}>Current Kcal:</Text>
-          <Text style={styles.caloriesNumber}>{totalCalories}</Text>  
+          <Text style={styles.caloriesNumber}>{totalCalories}</Text>
         </View>
       </View>
       <View style={styles.sliderContainer}>
-      <TrainingsSlider/>
+        <TrainingsSlider />
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  
   container: {
     backgroundColor: 'grey',
     height: '100%',
   },
   sliderContainer: {
     flex: 1,
-    justifyContent: 'center', 
-    alignItems: 'center', 
-  },
-  logo: {
-    width: 90,
-    height: 60,
-    resizeMode: 'contain',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    marginTop: 15,
-  },
-  calendar: {
-    backgroundColor: '#383836',
-    marginTop: 25,
-    borderRadius: 15,
-    width: 380,
-    color: '#FF5E00',
-    height: 320,
-  },
-  customTheme: {
-    calendarBackground: '#383836',
-    monthTextColor: '#FF5E00',
-    dayTextColor: 'white',
-    todayTextColor: '#FF5E00',
-    selectedDayBackgroundColor: '#FF5E00',
-    textSectionTitleColor: '#FF5E00',
-    arrowColor: '#FF5E00',
-    textDisabledColor: '#9D9D9D',
-
-  },
-  calendarContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-
-  inlineContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 15,
-    marginLeft: 15,
-    marginRight: 15,
-    height: 150,
   },
   workoutCounterContainer: {
     backgroundColor: 'black',
@@ -242,7 +161,38 @@ const styles = StyleSheet.create({
     textAlign: "left",
     marginLeft: 15,
   },
- 
+  inlineContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    height: 150,
+  },
+  calendarContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  calendar: {
+    backgroundColor: '#383836',
+    marginTop: 25,
+    borderRadius: 15,
+    width: 380,
+    color: '#FF5E00',
+    height: 320,
+  },
+  customTheme: {
+    calendarBackground: '#383836',
+    monthTextColor: '#FF5E00',
+    dayTextColor: 'white',
+    todayTextColor: '#FF5E00',
+    selectedDayBackgroundColor: '#FF5E00',
+    textSectionTitleColor: '#FF5E00',
+    arrowColor: '#FF5E00',
+    textDisabledColor: '#9D9D9D',
+  },
 });
 
 export default HomeScreen;

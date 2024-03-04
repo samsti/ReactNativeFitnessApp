@@ -1,4 +1,3 @@
-// CalendarScreen.js
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, StyleSheet, Alert, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -11,7 +10,6 @@ const CalendarScreen = () => {
   const [events, setEvents] = useState([]);
   const [newEventText, setNewEventText] = useState('');
   const [newEventTime, setNewEventTime] = useState('');
-  const [markedDates, setMarkedDates] = useState({});
   const navigation = useNavigation();
   const route = useRoute();
   const selectedDate = route.params?.selectedDate || null;
@@ -23,7 +21,8 @@ const CalendarScreen = () => {
     const selectedDate = new Date(date);
     const day = selectedDate.getDate();
     const month = selectedDate.getMonth() + 1;
-    return `${day}.${month}`;
+    const dayName = getDayName(selectedDate);
+    return `${day}.${month} ${dayName}`;
   };
 
   const getDayName = (date) => {
@@ -49,12 +48,11 @@ const CalendarScreen = () => {
       const allEvents = storedEvents ? JSON.parse(storedEvents) : {};
       const selectedDateEvents = allEvents[date] || [];
       setEvents(selectedDateEvents);
-      updateMarkedDates(date, selectedDateEvents);
     } catch (error) {
       console.error('Error loading events:', error);
     }
   };
-  
+
   const renderItem = ({ item }) => {
     return (
       <View style={styles.item}>
@@ -78,21 +76,13 @@ const CalendarScreen = () => {
       </View>
     );
   };
-  
 
- 
   const handleDeleteEvent = async (eventId) => {
     const updatedEvents = events.filter((event) => event.id !== eventId);
     setEvents(updatedEvents);
     storeEvents(updatedEvents, selectedDate);
-    updateMarkedDates(selectedDate, updatedEvents); // Update marked dates
-  
-    // Calculate the total events count based on the current total count and the length of the updated events array
-    const totalEventsCount = totalEvents - 1;
-    dispatch(updateTotalEvents(totalEventsCount)); // Update totalEvents count in Redux
   };
-  
-  
+
   const handleAddEvent = async () => {
     if (!newEventText || !newEventTime || !selectedDate) {
       Alert.alert('Incomplete Event', 'Please enter event details and select a date before adding.');
@@ -108,18 +98,10 @@ const CalendarScreen = () => {
     const updatedEvents = [...events, newEvent];
     setEvents(updatedEvents);
     storeEvents(updatedEvents, selectedDate);
-    updateMarkedDates(selectedDate, updatedEvents); // Update marked dates
-    
-    // Calculate the total events count based on the current total count and the length of the updated events array
-    const totalEventsCount = totalEvents + 1;
-    dispatch(updateTotalEvents(totalEventsCount)); // Update totalEvents count in Redux
   
     setNewEventText('');
     setNewEventTime('');
   };
-  
-  
-  
 
   const storeEvents = async (events, date) => {
     try {
@@ -127,79 +109,60 @@ const CalendarScreen = () => {
       const allEvents = storedEvents ? JSON.parse(storedEvents) : {};
       allEvents[date] = events;
       await AsyncStorage.setItem('events', JSON.stringify(allEvents));
+      
+      // After storing events, dispatch actions to update Redux store
+      dispatch(updateTotalEvents(events.length));
     } catch (error) {
       console.error('Error storing events:', error);
     }
   };
 
-// Inside the updateMarkedDates function in CalendarScreen component
-const updateMarkedDates = (date, updatedEvents) => {
-  console.log('Updated events:', updatedEvents);
-
-  const updatedMarkedDates = { ...markedDates };
-
-  // Check if there are events for the given date
-  if (updatedEvents.length > 0) {
-    updatedMarkedDates[date] = { marked: true, dotColor: '#FF5E00' };
-  } else {
-    // If no events, remove the mark for this date
-    delete updatedMarkedDates[date];
-  }
-
-  console.log('Updated marked dates:', updatedMarkedDates);
-
-  dispatch(updateTotalEvents(updatedEvents.length)); // Update total events count in Redux store
-  dispatch(updateMarkedDates(updatedMarkedDates)); // Update marked dates in Redux store
-};
-
-  
-
   return (
     <>
-    <NavBar />
-    <View style={styles.container}>
-    <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-      <Image source={require('../../assets/images/undo.png')} style={styles.backIcon}  />
-    </TouchableOpacity>
-      <View style={styles.contentContainer}>
-        <Text style={styles.headerText}>TODAY'S WORKOUT</Text>
-        <Text style={styles.dateText}>{getFormattedDate(selectedDate)} {getDayName(selectedDate)}</Text>
-      </View>
-
-      <FlatList
-        data={events}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        style={styles.scheduleList}
-      />
-
-      <View style={styles.inputContainer}>
-        <View style={styles.inputRow}>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.input}
-              placeholder="event"
-              placeholderTextColor="#FF5E00"
-              value={newEventText}
-              onChangeText={(text) => setNewEventText(text)}
-            />
-          </View>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.input}
-              placeholder="time"
-              placeholderTextColor="#FF5E00"
-              value={newEventTime}
-              onChangeText={handleTimeChange} // Updated to call handleTimeChange
-              keyboardType='numeric'
-            />
-          </View>
-        </View>
-        <TouchableOpacity style={styles.addButton} onPress={handleAddEvent}>
-          <Text style={styles.textButton}>add event</Text>
+      <NavBar />
+      <View style={styles.container}>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <Image source={require('../../assets/images/undo.png')} style={styles.backIcon}  />
         </TouchableOpacity>
+        <View style={styles.contentContainer}>
+          <Text style={styles.headerText}>TODAY'S WORKOUT</Text>
+          <Text style={styles.dateText}>{getFormattedDate(selectedDate)}</Text>
+        </View>
+
+        <FlatList
+          data={events}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          style={styles.scheduleList}
+        />
+
+        <View style={styles.inputContainer}>
+          <View style={styles.inputRow}>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                placeholder="event"
+                placeholderTextColor="#FF5E00"
+                value={newEventText}
+                onChangeText={(text) => setNewEventText(text)}
+              />
+            </View>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                placeholder="time"
+                placeholderTextColor="#FF5E00"
+                value={newEventTime}
+                onChangeText={handleTimeChange} // Updated to call handleTimeChange
+                keyboardType='numeric'
+              />
+            </View>
+          </View>
+          <TouchableOpacity style={styles.addButton} onPress={handleAddEvent}>
+            <Text style={styles.textButton}>add event</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
     </>
   );
 };
@@ -219,27 +182,20 @@ const styles = StyleSheet.create({
     fontFamily: "Rajdhani-Bold",
     marginBottom: 8,
     color: "#FF5E00",
-    marginBottom: 0, // Added color for consistency
   },
   dateText: {
     fontSize: 20,
     fontFamily: "Rajdhani-Regular",
     marginBottom: 16,
-    color: "#FF5E00",// Added color for consistency
+    color: "#FF5E00",
   },
   value: {
-    color: 'white', // Example color
-    fontSize: 20, // Example font size
+    color: 'white',
+    fontSize: 20,
     fontFamily: "Rajdhani-Medium",
   },
   inputContainer: {
     marginBottom: 16,
-  },
-  subheading: {
-    fontSize: 18,
-    marginBottom: 8,
-    color: 'white',
-   
   },
   inputRow: {
     flexDirection: 'row',
@@ -297,7 +253,6 @@ const styles = StyleSheet.create({
     fontFamily: "Rajdhani-Medium",
     textDecorationLine: "underline",
     marginBottom: 15,
-    
   },
   icon: {
     width: 40,
