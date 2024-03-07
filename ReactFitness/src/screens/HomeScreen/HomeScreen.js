@@ -11,9 +11,10 @@ import firestore from '@react-native-firebase/firestore';
 
 const HomeScreen = () => {
   const [userData, setUserData] = useState(null);
-  const [markedDates, setMarkedDates] = useState({});
   const totalCalories = useSelector(state => state.totalCalories);
   const totalEvents = useSelector(state => state.totalEvents);
+  const markedDates = useSelector(state => state.markedDates);
+
   const dispatch = useDispatch();
   const navigation = useNavigation();
 

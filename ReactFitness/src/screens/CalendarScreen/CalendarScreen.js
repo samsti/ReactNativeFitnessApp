@@ -68,6 +68,8 @@ const CalendarScreen = () => {
   };
   
   
+  
+  
 
   const renderItem = ({ item }) => {
     return (
@@ -128,21 +130,13 @@ const CalendarScreen = () => {
       await AsyncStorage.setItem('events', JSON.stringify(allEvents));
 
       updateMarkedDatesInRedux(allEvents);
-
-      const totalEventsCount = Object.values(allEvents).reduce((count, events) => {
-        if (events && Array.isArray(events)) {
-          return count + events.length;
-        } else {
-          console.error('Invalid events data:', events);
-          return count;
-        }
-      }, 0);
-
-      dispatch(updateTotalEvents(totalEventsCount));
+      dispatch(updateTotalEvents(Object.values(allEvents).flat().length));
     } catch (error) {
       console.error('Error storing events:', error);
     }
   };
+
+
   
   
   
