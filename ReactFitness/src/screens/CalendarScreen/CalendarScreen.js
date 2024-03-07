@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import NavBar from '../../components/navBar/navBar';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateTotalEvents } from '../../redux/actions';
+import { updateTotalEvents, updateMarkedDates } from '../../redux/actions';
 
 const CalendarScreen = () => {
   const [events, setEvents] = useState([]);
@@ -35,12 +35,7 @@ const CalendarScreen = () => {
   const handleTimeChange = (time) => {
     setNewEventTime(time);
   };
-
-  useEffect(() => {
-    if (selectedDate) {
-      loadEvents(selectedDate);
-    }
-  }, [selectedDate]);
+  
 
   const loadEvents = async (date) => {
     try {
@@ -52,6 +47,27 @@ const CalendarScreen = () => {
       console.error('Error loading events:', error);
     }
   };
+
+  useEffect(() => {
+    console.log('Selected date:', selectedDate);
+    if (selectedDate) {
+      loadEvents(selectedDate);
+    }
+  }, [selectedDate]);
+
+  const updateMarkedDatesInRedux = async (allEvents) => {
+    try {
+      const markedDates = {};
+      Object.keys(allEvents).forEach(date => {
+        markedDates[date] = { marked: allEvents[date].length > 0, dotColor: '#FF5E00' };
+      });
+      dispatch(updateMarkedDates(markedDates));
+    } catch (error) {
+      console.error('Error updating marked dates:', error);
+    }
+  };
+  
+  
 
   const renderItem = ({ item }) => {
     return (
@@ -77,12 +93,6 @@ const CalendarScreen = () => {
     );
   };
 
-  const handleDeleteEvent = async (eventId) => {
-    const updatedEvents = events.filter((event) => event.id !== eventId);
-    setEvents(updatedEvents);
-    storeEvents(updatedEvents, selectedDate);
-  };
-
   const handleAddEvent = async () => {
     if (!newEventText || !newEventTime || !selectedDate) {
       Alert.alert('Incomplete Event', 'Please enter event details and select a date before adding.');
@@ -103,19 +113,39 @@ const CalendarScreen = () => {
     setNewEventTime('');
   };
 
+  const handleDeleteEvent = async (eventId) => {
+    const updatedEvents = events.filter((event) => event.id !== eventId);
+    setEvents(updatedEvents);
+    storeEvents(updatedEvents, selectedDate);
+  };
+
   const storeEvents = async (events, date) => {
     try {
       const storedEvents = await AsyncStorage.getItem('events');
       const allEvents = storedEvents ? JSON.parse(storedEvents) : {};
       allEvents[date] = events;
+
       await AsyncStorage.setItem('events', JSON.stringify(allEvents));
-      
-      // After storing events, dispatch actions to update Redux store
-      dispatch(updateTotalEvents(events.length));
+
+      updateMarkedDatesInRedux(allEvents);
+
+      const totalEventsCount = Object.values(allEvents).reduce((count, events) => {
+        if (events && Array.isArray(events)) {
+          return count + events.length;
+        } else {
+          console.error('Invalid events data:', events);
+          return count;
+        }
+      }, 0);
+
+      dispatch(updateTotalEvents(totalEventsCount));
     } catch (error) {
       console.error('Error storing events:', error);
     }
   };
+  
+  
+  
 
   return (
     <>
