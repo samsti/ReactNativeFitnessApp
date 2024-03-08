@@ -3,10 +3,15 @@ import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ActivityInd
 import NavBar from "../../components/navBar/navBar";
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+
 
 const UserScreen = () => {
   const [userData, setUserData] = useState(null);
   const [modifiedUserData, setModifiedUserData] = useState(null); // State to hold modified user data
+
+  const navigation = useNavigation();
+
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -60,6 +65,10 @@ const UserScreen = () => {
           />
         </View>
         <Text style={styles.username}>{userData ? userData.username : ""}</Text>
+
+        <TouchableOpacity style={styles.logOut} onPress={() => navigation.navigate('LogIn')}>   
+            <Text style={styles.logOutText} >Log out</Text>
+        </TouchableOpacity>
 
         <View style={styles.inputContainer}>
           <Text style={styles.headings}>USERNAME</Text>
@@ -128,6 +137,24 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  logOut:{
+    fontFamily: "Rajdhani-Regular",
+    backgroundColor: "red",
+    borderRadius: 3,
+    width: 80,
+    height: 35,
+    verticalAlign: "middle", 
+    justifyContent: "center",
+    marginTop: 15,
+  },
+  logOutText: {
+    textAlign: "center",
+    justifyContent: "center",
+    verticalAlign: "middle", 
+    fontFamily: "Rajdhani-Bold",
+    color: "white",
+    fontSize: 17,
   },
   headings: {
     textAlign: "left",

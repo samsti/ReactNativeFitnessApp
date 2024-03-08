@@ -50,6 +50,9 @@ const LogInScreen = () => {
       console.error('Sign-in error:', error);
       Alert.alert('Sign-in Error', 'An error occurred during sign-in. Please try again.');
     }
+
+    setUsername('');
+    setPassword('');
   };
   
   const onDontHaveAccount = () => {
