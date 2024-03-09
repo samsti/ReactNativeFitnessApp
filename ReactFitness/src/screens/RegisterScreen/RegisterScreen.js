@@ -106,12 +106,12 @@ const RegisterScreen = () => {
 
         <Input 
         placeholder="Age"  
+        keyboardType='numeric'
         value={age}  
         setValue={setAge}  
         secureTextEntry={false}
         imageSource={iconImage !== '' ? { uri: iconImage } : ageIcon}
         type="REGISTER2" 
-        keyboardType="numeric"
         />
          <Input 
         placeholder="Weight"  

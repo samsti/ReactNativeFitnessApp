@@ -53,11 +53,14 @@ const HomeScreen = () => {
     fetchTotalCalories();
   }, [dispatch]);
 
+
+
   useEffect(() => {
     const fetchTotalEvents = async () => {
       try {
         const totalEventsData = await AsyncStorage.getItem('totalEvents');
         if (totalEventsData !== null) {
+          console.log(totalEvents);
           dispatch(updateTotalEvents(parseInt(totalEventsData)));
         } else {
           console.log('Total events data not found in AsyncStorage');
@@ -69,6 +72,8 @@ const HomeScreen = () => {
 
     fetchTotalEvents();
   }, [dispatch]);
+
+
 
   const onDayPress = (day) => {
     const currentDate = day.dateString;
