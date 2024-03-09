@@ -32,8 +32,18 @@ const CalendarScreen = () => {
     return days[dayIndex];
   };
 
-  const handleTimeChange = (time) => {
-    setNewEventTime(time);
+  const handleTimeChange = (text) => {
+    // Remove any non-numeric characters from the input
+    const cleanedText = text.replace(/\D/g, '');
+  
+    // Check if the cleaned text has at least two characters
+    if (cleanedText.length >= 2) {
+      // Insert a colon after the second character
+      const formattedText = cleanedText.slice(0, 2) + ':' + cleanedText.slice(2);
+      setNewEventTime(formattedText);
+    } else {
+      setNewEventTime(cleanedText);
+    }
   };
   
 
@@ -43,18 +53,21 @@ const CalendarScreen = () => {
       const allEvents = storedEvents ? JSON.parse(storedEvents) : {};
       const selectedDateEvents = allEvents[date] || [];
       setEvents(selectedDateEvents);
+  
+      // Update marked dates in Redux based on the loaded events
+      updateMarkedDatesInRedux(allEvents);
     } catch (error) {
       console.error('Error loading events:', error);
     }
   };
-
+  
   useEffect(() => {
     console.log('Selected date:', selectedDate);
     if (selectedDate) {
       loadEvents(selectedDate);
     }
   }, [selectedDate]);
-
+  
   const updateMarkedDatesInRedux = async (allEvents) => {
     try {
       const markedDates = {};
@@ -62,13 +75,21 @@ const CalendarScreen = () => {
         markedDates[date] = { marked: allEvents[date].length > 0, dotColor: '#FF5E00' };
       });
       dispatch(updateMarkedDates(markedDates));
+  
+      // Update total events count in Redux
+      const totalEventsCount = Object.values(allEvents).reduce((count, events) => {
+        if (events && Array.isArray(events)) {
+          return count + events.length;
+        } else {
+          console.error('Invalid events data:', events);
+          return count;
+        }
+      }, 0);
+      dispatch(updateTotalEvents(totalEventsCount));
     } catch (error) {
       console.error('Error updating marked dates:', error);
     }
   };
-  
-  
-  
   
 
   const renderItem = ({ item }) => {
@@ -130,15 +151,21 @@ const CalendarScreen = () => {
       await AsyncStorage.setItem('events', JSON.stringify(allEvents));
 
       updateMarkedDatesInRedux(allEvents);
-      dispatch(updateTotalEvents(Object.values(allEvents).flat().length));
+
+      const totalEventsCount = Object.values(allEvents).reduce((count, events) => {
+        if (events && Array.isArray(events)) {
+          return count + events.length;
+        } else {
+          console.error('Invalid events data:', events);
+          return count;
+        }
+      }, 0);
+
+      dispatch(updateTotalEvents(totalEventsCount));
     } catch (error) {
       console.error('Error storing events:', error);
     }
   };
-
-
-  
-  
   
 
   return (

@@ -16,19 +16,14 @@ const UserScreen = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // Retrieve the username from AsyncStorage
         const username = await AsyncStorage.getItem('username');
-    
-        // Retrieve the user with the provided username from Firestore
         const userSnapshot = await firestore().collection('user').where('username', '==', username).get();
-    
+
         if (!userSnapshot.empty) {
-          // Assuming there's only one user with the provided username
           const userData = userSnapshot.docs[0].data();
-          // Include the document ID in the user data
           userData.uid = userSnapshot.docs[0].id;
           setUserData(userData);
-          setModifiedUserData(userData); // Initialize modifiedUserData with userData
+          setModifiedUserData(userData); 
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -173,7 +168,7 @@ const styles = StyleSheet.create({
     height: 116,
     width: 116,
     borderRadius: 999,
-    marginTop: 34,
+    marginTop: 15,
     borderWidth: 2,
     borderColor: "#FF5E00",
     justifyContent: "center",
@@ -189,7 +184,7 @@ const styles = StyleSheet.create({
     width: "80%",
     marginTop: 10,
     paddingVertical: 10,
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     borderRadius: 5,
     fontSize: 16,
     fontFamily: "Rajdhani-Medium",
@@ -198,17 +193,17 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: "white",
     fontFamily: "Rajdhani-Bold",
-    marginTop: 10,
+    marginTop: 5,
   },
   addButton: {
     backgroundColor: "white",
     padding: 16,
     borderRadius: 3,
     alignItems: "center",
-    height: 89,
+    height: 70,
     justifyContent: "center",
     width: "80%",
-    marginTop: 20,
+    marginTop: 15,
   },
   textButton: {
     color: "#FF5E00",
