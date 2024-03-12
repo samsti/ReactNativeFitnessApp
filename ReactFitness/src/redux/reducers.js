@@ -1,6 +1,5 @@
-// reducers.js
 import { combineReducers } from 'redux';
-import totalCaloriesReducer from './totalCaloriesReducer'; // Import the reducer for totalCalories
+import totalCaloriesReducer from './totalCaloriesReducer'; 
 import totalEventsReducer from './totalEventsReducer';
 import markedDatesReducer from './markedDatesReducer';
 
@@ -11,7 +10,6 @@ const rootReducer = combineReducers({
   totalEvents: totalEventsReducer,
   markedDates: markedDatesReducer,
 
-  // Other reducers can be added here if needed
 
 });
 

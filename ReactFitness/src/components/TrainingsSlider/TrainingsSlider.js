@@ -21,7 +21,6 @@ const TrainingsSlider = () => {
     { id: 2, title: 'Back \n' + '&' + 'Biceps', image: require('../../assets/images/workouts.jpg'), selectedMuscle: ['Back', 'Biceps'] },
     { id: 3, title: 'Shoulders \n' + '&' + 'Traps', image: require('../../assets/images/workouts.jpg'), selectedMuscle: ['Shoulders', 'Traps'] },
     { id: 4, title: 'Legs \n' + '&' + 'Abs', image: require('../../assets/images/workouts.jpg'), selectedMuscle: ['Legs', 'Abs'] },
-    // Add more workouts as needed
   ];
 
   const renderItem = ({ item, index }) => (
@@ -75,7 +74,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
 
     marginTop: 5,
-    position: 'relative', // Ensure the overlayText respects the position relative to this container
+    position: 'relative', 
   },
   backgroundImage: {
     flex: 1,
@@ -93,10 +92,10 @@ const styles = StyleSheet.create({
     bottom: 60,
     left: 230,
     right: 0,
-    zIndex: 1, // Ensure the overlay text appears above the image
-    textShadowColor: 'rgba(0, 0, 0, 1)', // Shadow color
-    textShadowOffset: { width: 2, height: 2 }, // Shadow offset
-    textShadowRadius: 5, // Shadow radius
+    zIndex: 1, 
+    textShadowColor: 'rgba(0, 0, 0, 1)', 
+    textShadowOffset: { width: 2, height: 2 }, 
+    textShadowRadius: 5, 
   },
   paginationContainer: {
     position: 'absolute',

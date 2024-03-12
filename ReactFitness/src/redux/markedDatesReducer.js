@@ -1,4 +1,3 @@
-// markedDatesReducer.js
 import { UPDATE_MARKED_DATES } from './actions';
 
 const initialState = {};

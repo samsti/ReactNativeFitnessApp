@@ -14,17 +14,16 @@ const NutritionDataFetcher = ({ searchQuery, onFetchComplete }) => {
         });
 
         if (response.data.length > 0) {
-          onFetchComplete(response.data[0]); // Assuming the first item contains the relevant nutrition data
+          onFetchComplete(response.data[0]); 
         } else {
-          onFetchComplete(null); // If no data is found
+          onFetchComplete(null); 
         }
       } catch (error) {
         console.error('Error fetching data:', error);
-        onFetchComplete(null); // In case of error, pass null to indicate no data
+        onFetchComplete(null); 
       }
     };
 
-    // Fetch data only if search query is provided
     if (searchQuery) {
       fetchNutritionData();
     }

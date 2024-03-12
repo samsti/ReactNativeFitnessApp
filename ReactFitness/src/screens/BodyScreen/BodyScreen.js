@@ -39,9 +39,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    height: '80%', // Adjust the height as needed
+    height: '80%', 
   },
-  buttonContainer: {  // Adjust spacing as needed
+  buttonContainer: {  
     marginTop: 30,
     justifyContent: 'center',
   },

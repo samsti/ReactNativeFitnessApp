@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, Alert } from "react-native";
 import NavBar from "../../components/navBar/navBar";
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const UserScreen = () => {
   const [userData, setUserData] = useState(null);
-  const [modifiedUserData, setModifiedUserData] = useState(null); // State to hold modified user data
+  const [modifiedUserData, setModifiedUserData] = useState(null); 
 
   const navigation = useNavigation();
 
@@ -34,13 +34,11 @@ const UserScreen = () => {
   }, []);
 
   const handleInputChange = (key, value) => {
-    // Update the modifiedUserData state with the new input value
     setModifiedUserData({ ...modifiedUserData, [key]: value });
   };
 
   const handleSaveChanges = async () => {
     try {
-      // Update the user data in Firestore
       await firestore().collection('user').doc(userData.uid).update(modifiedUserData);
       Alert.alert('Success', 'User data updated successfully');
     } catch (error) {

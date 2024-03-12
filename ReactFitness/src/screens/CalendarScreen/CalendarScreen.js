@@ -33,12 +33,9 @@ const CalendarScreen = () => {
   };
 
   const handleTimeChange = (text) => {
-    // Remove any non-numeric characters from the input
     const cleanedText = text.replace(/\D/g, '');
-  
-    // Check if the cleaned text has at least two characters
-    if (cleanedText.length >= 2) {
-      // Insert a colon after the second character
+
+      if (cleanedText.length >= 2) {
       const formattedText = cleanedText.slice(0, 2) + ':' + cleanedText.slice(2);
       setNewEventTime(formattedText);
     } else {
@@ -54,7 +51,6 @@ const CalendarScreen = () => {
       const selectedDateEvents = allEvents[date] || [];
       setEvents(selectedDateEvents);
   
-      // Update marked dates in Redux based on the loaded events
       updateMarkedDatesInRedux(allEvents);
     } catch (error) {
       console.error('Error loading events:', error);
@@ -204,7 +200,7 @@ const CalendarScreen = () => {
                 placeholder="time"
                 placeholderTextColor="#FF5E00"
                 value={newEventTime}
-                onChangeText={handleTimeChange} // Updated to call handleTimeChange
+                onChangeText={handleTimeChange} 
                 keyboardType='numeric'
               />
             </View>

@@ -1,4 +1,3 @@
-// ExerciseListScreen.js
 import React, { useState } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import ExerciseCard from '../../components/ExerciseCard';
@@ -50,7 +49,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   cardContainer: {
-    // Your cardContainer styles here
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 3,
@@ -59,14 +57,12 @@ const styles = StyleSheet.create({
     marginLeft: 50,
   },
   gifImage: {
-    // Your gifImage styles here
     width: '100%',
     height: 200,
     resizeMode: 'cover',
     borderRadius: 8,
   },
   exerciseName: {
-    // Your exerciseName styles here
     fontSize: 18,
     justifyContent: 'center',
     textAlign: 'center',
@@ -74,17 +70,14 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   sectionHeading: {
-    // Your sectionHeading styles here
     marginTop: 8,
     fontSize: 16,
     fontWeight: 'bold',
   },
   additionalInfo: {
-    // Your additionalInfo styles here
     fontSize: 14,
   },
   instructions: {
-    // Your instructions styles here
     fontSize: 14,
     marginTop: 8,
   },

@@ -32,7 +32,6 @@ const RegisterScreen = () => {
         throw new Error('Please fill in all fields');
       }
   
-      // Add user data to Firestore
       await firestore().collection('user').add({
         username,
         Password,
@@ -51,12 +50,10 @@ const RegisterScreen = () => {
   };
 
   const handleImageChange = (text) => {
-    // Update the state with the new image URL entered in the TextInput
     setIconImage(text);
   };
 
   const onHaveAccount = () => {
-    console.warn("Sign in");
     navigation.navigate('LogIn');
   };
 

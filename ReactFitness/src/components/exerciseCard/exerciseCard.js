@@ -3,12 +3,10 @@ import { TouchableOpacity, Text, Animated, StyleSheet, View } from 'react-native
 import FastImage from 'react-native-fast-image';
 
 const ExerciseCard = ({ exercise, expanded, toggleExpand }) => {
-  const [containerWidth, setContainerWidth] = useState('50%'); // Initial width set to 50%
+  const [containerWidth, setContainerWidth] = useState('50%'); 
 
   const handlePress = () => {
-    // Toggle width between 50% and 100%
     setContainerWidth(prevWidth => prevWidth === '50%' ? '100%' : '50%');
-    // Trigger the expansion toggle
     toggleExpand();
   };
 
@@ -82,8 +80,8 @@ const styles = StyleSheet.create({
   },
   infoItem: {
     paddingHorizontal: 80,
-    justifyContent: 'center', // Center content vertically
-    alignItems: 'center', // Adjust the padding as needed
+    justifyContent: 'center', 
+    alignItems: 'center', 
   },
   cardContainer: {
     borderRadius: 3,
@@ -92,8 +90,8 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     marginBottom: 30,
     backgroundColor: "#FF5E00",
-    justifyContent: 'center', // Center content vertically
-    alignItems: 'center', // Center content horizontally
+    justifyContent: 'center', 
+    alignItems: 'center', 
   },
   gifImage: {
     width: '100%',

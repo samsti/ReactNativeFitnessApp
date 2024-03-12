@@ -4,12 +4,9 @@
  *
  * @format
  */
-
+import "./ignoreWarnings";
 import {
   SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
 } from 'react-native';
 import React from 'react';
 import Navigation from './src/navigation';
@@ -17,7 +14,8 @@ import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
 import { Provider } from 'react-redux';
-import store from './src/redux/store'; // Import your Redux store
+import store from './src/redux/store'; 
+
 
 
 const App = () => {

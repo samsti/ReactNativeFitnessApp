@@ -1,10 +1,5 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, Image,} from 'react-native';
-import CustomButton from '../../components/customButton'; // Import your CustomButton component
-//<Image
-//source={require('../../assets/images/zamek.png')} // Replace with your password icon path
-//style={styles.iconStyle}
-///>
 
 const Input = ({ value, setValue, placeholder, secureTextEntry, iconImage, imageSource, type }) => {
   return (
@@ -58,7 +53,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8, 
     backgroundColor: '#a83203',
     borderTopRightRadius: 5,
-    borderBottomRightRadius: 5,// Adjust vertical padding for the text input
+    borderBottomRightRadius: 5,
   },
   textContainer_REGISTER: {
     height: '8%',

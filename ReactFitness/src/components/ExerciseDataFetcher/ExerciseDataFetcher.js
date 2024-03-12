@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Text } from 'react-native';
+
 
 const ExerciseDataFetcher = ({ selectedMuscle, onFetchComplete }) => {
   useEffect(() => {
@@ -10,7 +10,6 @@ const ExerciseDataFetcher = ({ selectedMuscle, onFetchComplete }) => {
         let rapidApiEndpoints = [];
 
         if (Array.isArray(selectedMuscle)) {
-          // If selectedMuscle is an array, iterate over each muscle group
           selectedMuscle.forEach(muscle => {
             switch (muscle) {
               case 'Shoulders':
@@ -40,14 +39,12 @@ const ExerciseDataFetcher = ({ selectedMuscle, onFetchComplete }) => {
                 rapidApiEndpoints.push('https://exercisedb.p.rapidapi.com/exercises/target/biceps?limit=3');
 
                 break;
-              // Add more cases for other muscle groups if needed
               default:
                 console.warn('Invalid muscle selection:', muscle);
                 break;
             }
           });
 
-          // Fetch exercises for each muscle group using Promise.all
           const fetchPromises = rapidApiEndpoints.map(endpoint => fetch(endpoint, {
             method: 'GET',
             params: { limit: '3' },
@@ -63,7 +60,6 @@ const ExerciseDataFetcher = ({ selectedMuscle, onFetchComplete }) => {
 
           onFetchComplete(exercises);
         } else {
-          // If selectedMuscle is not an array, fetch exercises for a single muscle group
           let rapidApiEndpoint = '';
           switch (selectedMuscle) {
             case 'Shoulders':

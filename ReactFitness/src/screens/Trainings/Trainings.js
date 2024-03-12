@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, Text, Animated, StyleSheet, View } from 'react-native';
-import ExerciseListScreen from '../../screens/ExerciseListScreen'; // Assuming ExerciseListScreen.js is in the same directory
+import ExerciseListScreen from '../../screens/ExerciseListScreen'; 
 import ExerciseDataFetcher from '../../components/ExerciseDataFetcher';
 
 const Trainings = ({ route }) => {

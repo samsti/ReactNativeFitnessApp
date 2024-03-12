@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const NavBar = () => {
@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
     height: 40,
   },
   logo: {
-    width: 90, // Adjust width as per your design
-    height: 60, // Adjust height as per your design
+    width: 90, 
+    height: 60, 
     resizeMode: 'contain',
   },
 });

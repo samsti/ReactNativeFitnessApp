@@ -1,7 +1,6 @@
 
 
 import { enablePromise, openDatabase } from 'react-native-sqlite-storage';
-import { FitnessItem } from '../models';
 
 
 
@@ -13,7 +12,6 @@ export const getDBConnection = async () => {
 };
 
 export const createTable = async (db) => {
-  // create table if not exists
   const query = `CREATE TABLE IF NOT EXISTS ${tableName}(
         value TEXT NOT NULL
     );`;

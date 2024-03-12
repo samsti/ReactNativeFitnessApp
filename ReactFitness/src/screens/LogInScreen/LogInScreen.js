@@ -23,7 +23,6 @@ const LogInScreen = () => {
     }
 
     try {
-      // Retrieve the user with the provided username from Firestore
       const userSnapshot = await firestore().collection('user').where('username', '==', username).get();
       
       if (userSnapshot.empty) {
@@ -31,23 +30,18 @@ const LogInScreen = () => {
         return;
       }
 
-      // Assuming there's only one user with the provided username, retrieve the user data
       const userData = userSnapshot.docs[0].data();
 
-      // Check if the provided password matches the stored password
       if (Password !== userData.Password) {
         Alert.alert('Invalid Input', 'Username or password is incorrect');
         return;
       }
 
-      // If everything is correct, navigate to Home screen
       navigation.navigate('Home');
       Alert.alert('Logged in successfully');
       await AsyncStorage.setItem('username', username);
-      //console.warn(username);
 
     } catch (error) {
-      console.error('Sign-in error:', error);
       Alert.alert('Sign-in Error', 'An error occurred during sign-in. Please try again.');
     }
 
