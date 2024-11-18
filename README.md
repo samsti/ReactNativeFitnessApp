@@ -4,9 +4,9 @@ A high school project built with React Native to help users track workouts, set 
 
 Features
 
-Exercise library: choose your workout by which muscle part you want to train
-Calendar: Plan your workouts using build in calendar
-Meal planner: Plan your meals and measure your macros and calories
+Exercise library: choose your workout by which muscle part you want to train <br>
+Calendar: Plan your workouts using build in calendar<br>
+Meal planner: Plan your meals and measure your macros and calories<br>
 Customizable Workouts: Add or adjust exercises to suit individual needs.
 
 Tech Stack
