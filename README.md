@@ -87,12 +87,6 @@ Then run the app on an Android emulator or physical device using Android Studio.
 
 ---
 
-## 👨‍💻 Author
-
-Developed by a Computer Science student at EASV as a hands-on React Native project focused on practical software development.
-
----
-
 ## 📄 License
 
 This project is for educational purposes.
